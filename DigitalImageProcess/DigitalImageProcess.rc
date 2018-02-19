@@ -1,0 +1,472 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(简体，中国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\DigitalImageProcess.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""l.CHS\\afxres.rc""      // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\DigitalImageProcess.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 DigitalImageProcess"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
+    LTEXT           "DigitalImageProcess，1.0 版",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2015",IDC_STATIC,42,26,114,8
+    DEFPUSHBUTTON   "确定",IDOK,113,41,50,14,WS_GROUP
+END
+
+IDD_DIALOG1 DIALOGEX 0, 0, 163, 106
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "请输入阈值"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,29,75,50,14
+    PUSHBUTTON      "取消",IDCANCEL,83,75,50,14
+    LTEXT           "请输入一个 0-65536 之间的值",IDC_STATIC,29,19,110,17
+    EDITTEXT        IDC_EDIT1,29,34,103,14,ES_AUTOHSCROLL
+END
+
+IDD_DIALOG2 DIALOGEX 0, 0, 187, 113
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "请输入窗口变换上下限"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,33,80,50,14
+    PUSHBUTTON      "取消",IDCANCEL,101,80,50,14
+    EDITTEXT        IDC_EDIT1,63,35,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,63,56,88,14,ES_AUTOHSCROLL
+    LTEXT           "上限",IDC_STATIC,33,38,17,8
+    LTEXT           "下限",IDC_STATIC,33,58,17,8
+    LTEXT           "请输入两个 0-65536 之间的值",IDC_STATIC,35,19,104,8
+END
+
+IDD_GrayStretchDlg DIALOGEX 0, 0, 322, 98
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "请输入灰度拉伸的上下范围"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,164,13,50,14
+    PUSHBUTTON      "取消",IDCANCEL,242,13,50,14
+    EDITTEXT        IDC_EDIT1,55,36,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,209,36,85,14,ES_AUTOHSCROLL
+    LTEXT           "起始点",IDC_STATIC,15,39,25,8
+    LTEXT           "结束点",IDC_STATIC,169,39,25,8
+    LTEXT           "请输入两个 0-65536 之间的值",IDC_STATIC,15,15,104,8
+    CONTROL         "",IDC_SLIDER1,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,9,53,296,15
+    CONTROL         "",IDC_SLIDER2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,9,69,296,15
+END
+
+IDD_DIALOG4 DIALOGEX 0, 0, 184, 110
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION
+CAPTION "输入伽马矫正值"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,34,82,50,14
+    PUSHBUTTON      "取消",IDCANCEL,100,82,52,14
+    LTEXT           "GaMa值",IDC_STATIC,36,31,27,8
+    LTEXT           "乘数因子",IDC_STATIC,36,53,33,8
+    EDITTEXT        IDC_EDIT1,86,29,65,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,85,50,66,14,ES_AUTOHSCROLL
+END
+
+IDD_DIALOG5 DIALOGEX 0, 0, 425, 285
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,205,264,50,14
+    PUSHBUTTON      "取消",IDCANCEL,368,264,50,14
+    EDITTEXT        IDC_EDIT_LowGray,271,238,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_UpGray,359,238,40,14,ES_AUTOHSCROLL
+    LTEXT           "显示的灰度区域下限:",IDC_STATIC,175,244,76,8
+    LTEXT           "上限",IDC_STATIC,325,240,17,8
+    LTEXT           "",IDC_COORD,19,15,269,103
+END
+
+IDD_DIGITALIMAGEPROCESS_DIALOG DIALOGEX 0, 0, 431, 219
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "DigitalImageProcess"
+MENU IDR_MENU_MAIN
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+END
+
+IDD_MedianFilter DIALOGEX 0, 0, 316, 182
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "中值滤波"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,205,161,50,14
+    PUSHBUTTON      "取消",IDCANCEL,259,161,50,14
+    EDITTEXT        IDC_EDIT1,97,36,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,97,62,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,97,88,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,97,114,40,14,ES_AUTOHSCROLL
+    LTEXT           "模板高度",IDC_STATIC,32,38,33,8
+    LTEXT           "模板宽度",IDC_STATIC,32,64,33,8
+    LTEXT           "模板中心X",IDC_STATIC,32,90,37,8
+    LTEXT           "模板中心Y",IDC_STATIC,32,116,37,8
+END
+
+IDD_AnyFilter DIALOGEX 0, 0, 316, 182
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "平滑模板"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,205,161,50,14
+    PUSHBUTTON      "取消",IDCANCEL,259,161,50,14
+    LTEXT           "高度",IDC_STATIC,31,65,17,8
+    LTEXT           "系数",IDC_STATIC,31,39,17,8
+    LTEXT           "宽度",IDC_STATIC,31,91,17,8
+    LTEXT           "中心坐标X",IDC_STATIC,31,117,37,8
+    LTEXT           "中心坐标Y",IDC_STATIC,31,143,37,8
+    EDITTEXT        IDC_EDIT3,70,88,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT4,70,114,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT5,70,139,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT6,148,49,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT1,70,35,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,70,62,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT7,174,49,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT8,200,49,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT9,226,49,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT10,252,49,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT11,149,67,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT12,175,67,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT13,201,67,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT14,227,67,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT15,253,67,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT16,149,87,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT17,175,87,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT18,201,87,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT19,227,87,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT20,253,87,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT21,149,111,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT22,175,111,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT23,201,111,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT24,227,111,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT25,253,111,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT26,149,133,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT27,175,133,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT28,201,133,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT29,227,133,22,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT30,253,133,22,14,ES_AUTOHSCROLL
+    LTEXT           "模板元素",IDC_STATIC,145,33,33,8
+    CONTROL         "平均模板",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,28,14,48,10
+    CONTROL         "高斯模板",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,116,14,48,10
+    CONTROL         "自定义模板",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,199,12,56,10
+END
+
+IDD_DIALOG6 DIALOGEX 0, 0, 158, 69
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "叠加系数"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,94,29,41,14
+    EDITTEXT        IDC_EDIT1,26,29,69,13,ES_AUTOHSCROLL
+END
+
+IDD_DIALOG7 DIALOGEX 0, 0, 163, 77
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "GradSharp阈值"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,86,39,50,16
+    EDITTEXT        IDC_EDIT1,28,40,60,14,ES_AUTOHSCROLL
+    LTEXT           "请输入一个0-65536之间的值",IDC_STATIC,30,21,100,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "DigitalImageProcess.exe"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "DigitalImageProcess.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_DIALOG1, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 156
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 99
+    END
+
+    IDD_DIALOG2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 180
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 106
+    END
+
+    IDD_GrayStretchDlg, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 315
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 91
+    END
+
+    IDD_DIALOG4, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 177
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_DIALOG5, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 418
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 278
+    END
+
+    IDD_DIGITALIMAGEPROCESS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 424
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 212
+    END
+
+    IDD_MedianFilter, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 175
+    END
+
+    IDD_AnyFilter, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        VERTGUIDE, 309
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 175
+    END
+
+    IDD_DIALOG6, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 151
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 62
+    END
+
+    IDD_DIALOG7, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 156
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_MAIN MENU
+BEGIN
+    POPUP "文件"
+    BEGIN
+        MENUITEM "打开图片(Pkg)",                   ID_32794
+    END
+    POPUP "灰度变换"
+    BEGIN
+        MENUITEM "打开图片(Raw)",                   ID_32776
+        MENUITEM "直方图均衡",                       ID_32772
+        MENUITEM "窗宽窗位调节",                      ID_GrayStretch
+        MENUITEM "阈值变换",                        ID_32775
+        MENUITEM "图片反色",                        ID_32778
+        MENUITEM "绘制直方图",                       ID_32780
+        MENUITEM "还原图像",                        ID_32777
+    END
+    POPUP "图像滤波"
+    BEGIN
+        MENUITEM "中值滤波",                        ID_32781
+        MENUITEM "图像平滑",                        ID_32783
+    END
+    POPUP "图像锐化"
+    BEGIN
+        MENUITEM "UnsharpMasking",              ID_32784
+        MENUITEM "Robert",                      ID_Robert
+        MENUITEM "Gauss",                       ID_32787
+        MENUITEM "GardSharp",                   ID_32788
+        MENUITEM "Canny",                       ID_32789
+    END
+    POPUP "肺结节提取"
+    BEGIN
+        MENUITEM "肺部提取",                        ID_32790
+        MENUITEM "替换",                          ID_32791
+    END
+    POPUP "安检图像增强"
+    BEGIN
+        MENUITEM "增强单能图像",                      ID_EnSEI
+        MENUITEM "增强双能图像",                      ID_EnDEI
+        MENUITEM "批量增强双能图像",                    ID_EnDEIBat
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ABOUTBOX            "关于 DigitalImageProcess(&A)..."
+END
+
+#endif    // 中文(简体，中国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\DigitalImageProcess.rc2"  // 非 Microsoft Visual C++ 编辑的资源
+#include "l.CHS\afxres.rc"      // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

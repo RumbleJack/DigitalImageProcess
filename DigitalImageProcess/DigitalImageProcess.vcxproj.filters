@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="图像处理类">
+      <UniqueIdentifier>{2651a161-9f96-45d8-9f1b-30fce032d067}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="对话框类">
+      <UniqueIdentifier>{02073023-b0a5-450f-8033-7cc7115f94df}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DigitalImageProcess.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvFilter.cpp">
+      <Filter>图像处理类</Filter>
+    </ClCompile>
+    <ClCompile Include="ListImage.cpp">
+      <Filter>图像处理类</Filter>
+    </ClCompile>
+    <ClCompile Include="Morphy.cpp">
+      <Filter>图像处理类</Filter>
+    </ClCompile>
+    <ClCompile Include="PointTrans.cpp">
+      <Filter>图像处理类</Filter>
+    </ClCompile>
+    <ClCompile Include="DigitalImageProcessDlg.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgAnyFilter.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgMedianFilter.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="GradSharpDlg.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="GrayStretchDialog.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="IntensityDlg.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="ThresholdDialog.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="UnsharpMaskingDlg.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowDialog.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="ProcessImage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SecurityImage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DigitalImageProcess.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvFilter.h">
+      <Filter>图像处理类</Filter>
+    </ClInclude>
+    <ClInclude Include="ListImage.h">
+      <Filter>图像处理类</Filter>
+    </ClInclude>
+    <ClInclude Include="Morphy.h">
+      <Filter>图像处理类</Filter>
+    </ClInclude>
+    <ClInclude Include="PointDef.h">
+      <Filter>图像处理类</Filter>
+    </ClInclude>
+    <ClInclude Include="pointTrans.h">
+      <Filter>图像处理类</Filter>
+    </ClInclude>
+    <ClInclude Include="ProcessImage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DigitalImageProcessDlg.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgAnyFilter.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgMedianFilter.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="GradSharpDlg.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="GrayStretchDialog.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="IntensityDlg.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="ThresholdDialog.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="UnsharpMaskingDlg.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="WindowDialog.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="SecurityImage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\DigitalImageProcess.ico">
+      <Filter>资源文件</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DigitalImageProcess.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\DigitalImageProcess.rc2">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>
