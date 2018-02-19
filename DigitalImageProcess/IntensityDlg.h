@@ -12,7 +12,7 @@ public:
 	virtual ~CIntensityDlg();
 
 // 对话框数据
-	enum { IDD = IDD_DIALOG5 };
+	enum { IDD = IDD_DrawIntensity };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持

@@ -66,7 +66,6 @@ void CDigitalImageProcessDlg::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 }
 
-
 BEGIN_MESSAGE_MAP(CDigitalImageProcessDlg, CDialog)
 	ON_WM_SYSCOMMAND() // 标题栏右键菜单
 	ON_WM_PAINT()		// 客户区重绘
@@ -75,37 +74,22 @@ BEGIN_MESSAGE_MAP(CDigitalImageProcessDlg, CDialog)
 	// 滚动条
 	ON_WM_HSCROLL()
 	ON_WM_VSCROLL()
-
-	// 调整窗口大小
-	ON_WM_SIZE()
-
 	// 鼠标事件
 	ON_WM_MOUSEWHEEL()
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
-
-	// ?
+	// 调整窗口大小
+	ON_WM_SIZE()
+	// 背景擦除消息响应
 	ON_WM_ERASEBKGND()
 
 	// 自定义事件响应
 	ON_COMMAND(ID_GrayStretch, &CDigitalImageProcessDlg::SelectGrayStretch) //窗宽窗位调整
-
-	ON_COMMAND(ID_32776, &CDigitalImageProcessDlg::OnOpenRaw)
-	ON_COMMAND(ID_32775, &CDigitalImageProcessDlg::SelectThreshold)
-	ON_COMMAND(ID_32772, &CDigitalImageProcessDlg::OnInteEqualize)
-	ON_COMMAND(ID_32777, &CDigitalImageProcessDlg::OnRecovery)
-	ON_COMMAND(ID_32778, &CDigitalImageProcessDlg::OnGrayReverse)
-	ON_COMMAND(ID_32780, &CDigitalImageProcessDlg::OnDrawIntensity)
-	ON_COMMAND(ID_32781, &CDigitalImageProcessDlg::OnMedianFilter)
-	ON_COMMAND(ID_32783, &CDigitalImageProcessDlg::OnAnyFilter)
-	ON_COMMAND(ID_32784, &CDigitalImageProcessDlg::OnUnsharpMasking)
-	ON_COMMAND(ID_Robert, &CDigitalImageProcessDlg::OnRobert)
-	ON_COMMAND(ID_32787, &CDigitalImageProcessDlg::OnGauss)
-	ON_COMMAND(ID_32788, &CDigitalImageProcessDlg::OnGardSharp)
-	ON_COMMAND(ID_32789, &CDigitalImageProcessDlg::OnCanny)
-	ON_COMMAND(ID_32790, &CDigitalImageProcessDlg::OnLungFetch)
-	ON_COMMAND(ID_32791, &CDigitalImageProcessDlg::OnReplaceImage)
-	ON_COMMAND(ID_32794, &CDigitalImageProcessDlg::OnOpenPkg)
+	ON_COMMAND(ID_OpenRaw, &CDigitalImageProcessDlg::OnOpenRaw)
+	ON_COMMAND(ID_RecoveryOriginImage, &CDigitalImageProcessDlg::OnRecoveryOriginImage)
+	ON_COMMAND(ID_DrawIntensity, &CDigitalImageProcessDlg::OnDrawIntensity)
+	ON_COMMAND(ID_AnyFilter, &CDigitalImageProcessDlg::OnAnyFilter)
+	ON_COMMAND(ID_OpenPkg, &CDigitalImageProcessDlg::OnOpenPkg)
 END_MESSAGE_MAP()
 
 
@@ -200,7 +184,7 @@ void CDigitalImageProcessDlg::OnSysCommand(UINT nID, LPARAM lParam)
 	}
 }
 
-// 如果向对话框添加最小化按钮，则需要下面的代码
+//  如果向对话框添加最小化按钮，则需要下面的代码
 //  来绘制该图标。对于使用文档/视图模型的 MFC 应用程序，
 //  这将由框架自动完成。
 void CDigitalImageProcessDlg::OnPaint()
@@ -289,7 +273,7 @@ void CDigitalImageProcessDlg::OnOpenRaw()
 	}
 
 	// ProcessImage读入图像（自定义格式）
-	processImg.readIn(fileName);
+	processImg.readFile(fileName);
 	// 设置图像尺寸参数
 	x = 0;
 	y = 0;
@@ -307,40 +291,6 @@ void CDigitalImageProcessDlg::OnOpenRaw()
 	Invalidate();
 }
 
-
-
-
-// 输入阈值变换的阈值
-void CDigitalImageProcessDlg::SelectThreshold()
-{
-	if (img.IsNull())
-		return;
-
-	ThresholdDialog dlg;
-	dlg.DoModal();
-
-	if (dlg.flag == false)
-	{
-		return;
-	}
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	//ListImage xx;
-	pPT->ThresholdTrans16(m_ListImage, (unsigned short)(atoi(dlg.ThresholdValue)));
-
-	//数据写回
-	memcpy(processImg.m_pixel, m_ListImage->GetImgBuffer(), 2048 * 2099 * 2);
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-}
-
 // 输入灰度拉伸的起始点和结束点
 void CDigitalImageProcessDlg::SelectGrayStretch()
 {
@@ -348,107 +298,13 @@ void CDigitalImageProcessDlg::SelectGrayStretch()
 		return;
 
 	//采用成员变量创建一个非模态对话框  
-	pTD = new GrayStretchDialog(); //给指针分配内存  
-	pTD->Create(IDD_DIALOG3); //创建一个非模态对话框  
-	pTD->ShowWindow(SW_SHOWNORMAL); //显示非模态对话框 
-	pTD->setImageFlag(0);			//每次处理原始图像
+	pGSD = new GrayStretchDlg(); //给指针分配内存  
+	pGSD->Create(IDD_GrayStretchDlg); //创建一个非模态对话框  
+	pGSD->ShowWindow(SW_SHOWNORMAL); //显示非模态对话框 
+	pGSD->setImageFlag(0);			//每次处理原始图像
 }
 
-void CDigitalImageProcessDlg::OnInteEqualize()
-{
-	if (img.IsNull())
-		return;
-
-	//数据处理
-	unsigned short* pp = processImg.m_pixel;
-	unsigned char* ppp = new unsigned char[2048 * 2099 + 1];
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		ppp[i] = (unsigned char)(pp[i] / 256);
-	}
-
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_8);
-	m_ListImage->SetData(ppp, 2048 * 2099);
-
-	//ListImage xx;
-	pPT->InteEqualize(m_ListImage);
-
-	//数据写回
-	memcpy(ppp, m_ListImage->GetImgBuffer(), 2048 * 2099);
-
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		processImg.m_pixel[i] = ((unsigned short)ppp[i]) * 256;
-	}
-
-	processImg.setCImageFast(img);
-
-	delete ppp;
-
-
-	//// 数据处理
-	//m_ListImage->SetSize(2048,2099);
-	//m_ListImage->SetChannel(1);
-	//m_ListImage->SetType(uint_16);
-	//m_ListImage->SetData(processImg.m_pixel,2048*2099*2);
-
-	//pPT->InteEqualize(m_ListImage);
-
-	////数据写回
-	//memcpy(processImg.m_pixel,m_ListImage->GetImgBuffer(),2048*2099*2);
-
-	//processImg.setCImageFast(img);
-
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-
-	MessageBox("直方图均衡已完成");
-}
-
-void CDigitalImageProcessDlg::OnGrayReverse()
-{
-	if (img.IsNull())
-		return;
-
-	//数据处理
-	unsigned short* pp = processImg.m_pixel;
-	unsigned char* ppp = new unsigned char[2048 * 2099 + 1];
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		ppp[i] = (unsigned char)(pp[i] / 256);
-	}
-
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_8);
-	m_ListImage->SetData(ppp, 2048 * 2099);
-
-	//ListImage xx;
-	pPT->GrayReverse(m_ListImage);
-
-	//数据写回
-	memcpy(ppp, m_ListImage->GetImgBuffer(), 2048 * 2099);
-
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		processImg.m_pixel[i] = ((unsigned short)ppp[i]) * 256;
-	}
-
-	processImg.setCImageFast(img);
-
-	delete ppp;
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-
-	MessageBox("图片反色已完成");
-}
-
-
-void CDigitalImageProcessDlg::OnRecovery()
+void CDigitalImageProcessDlg::OnRecoveryOriginImage()
 {
 	if (img.IsNull())
 		return;
@@ -465,6 +321,7 @@ void CDigitalImageProcessDlg::OnRecovery()
 
 	Invalidate();
 }
+
 void CDigitalImageProcessDlg::OnDrawIntensity()
 {
 	if (img.IsNull())
@@ -492,63 +349,13 @@ void CDigitalImageProcessDlg::OnDrawIntensity()
 	}
 }
 
-void CDigitalImageProcessDlg::OnMedianFilter()
-{
-	if (img.IsNull())
-		return;
-
-	//创建对话框
-	CDlgMedianFilter dlgMedian;
-	//显示对话框
-	if (dlgMedian.DoModal() != IDOK)
-	{
-		return;
-	}
-
-	pTemp->fCoef = 1;
-	pTemp->iTempH = dlgMedian.m_iTempH;
-	pTemp->iTempW = dlgMedian.m_iTempW;
-	pTemp->iTempMX = dlgMedian.m_iTempMX;
-	pTemp->iTempMY = dlgMedian.m_iTempMY;
-
-	pTemp->fpArray = new float[pTemp->iTempH * pTemp->iTempW];
-	for (int i = 0; i < pTemp->iTempH * pTemp->iTempW; i++)
-	{
-		pTemp->fpArray[i] = 1;
-	}
-
-	//是否存在图像
-	if (img.IsNull())
-		return;
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	//处理过的图像数据
-	ListImage destListImage;
-	pCF->SetFK(*pTemp);
-	pCF->MedianFilter(*m_ListImage, destListImage, mode);
-	*m_ListImage = destListImage;
-
-	//数据写回
-	memcpy(processImg.m_pixel, m_ListImage->GetImgBuffer(), 2048 * 2099 * 2);
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-	MessageBox("中值滤波已完成");
-}
-
 void CDigitalImageProcessDlg::OnAnyFilter()
 {
 	if (img.IsNull())
 		return;
 
 	//创建对话框
-	CDlgAnyFilter smooth;
+	CAnyFilterDlg smooth;
 
 	//显示对话框
 	if (smooth.DoModal() != IDOK)
@@ -592,151 +399,6 @@ void CDigitalImageProcessDlg::OnAnyFilter()
 	Invalidate();//强制调用OnDraw函数
 
 	MessageBox("滤波已完成");
-}
-
-void CDigitalImageProcessDlg::OnUnsharpMasking()
-{
-	// TODO: 在此添加命令处理程序代码
-	if (img.IsNull())
-		return;
-
-	UnsharpMaskingDlg dlg;
-	dlg.DoModal();
-
-	float frequencyCoefficient1 = atof(dlg.frequencyCoefficient);
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	//处理过的图像数据
-	ListImage destListImage;
-	pCF->UnsharpMasking(*m_ListImage, destListImage, frequencyCoefficient1);
-	*m_ListImage = destListImage;
-
-	//数据写回
-	memcpy(processImg.m_pixel, m_ListImage->GetImgBuffer(), 2048 * 2099 * 2);
-
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-
-	MessageBox("UnsharpMasking已完成");
-}
-
-void CDigitalImageProcessDlg::OnRobert()
-{
-	if (img.IsNull())
-		return;
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	//处理过的图像数据
-	ListImage destListImage;
-	pCF->Roberts(*m_ListImage, destListImage);
-	*m_ListImage = destListImage;
-
-	//数据写回
-	memcpy(processImg.m_pixel, m_ListImage->GetImgBuffer(), 2048 * 2099 * 2);
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-
-	MessageBox("Robert已完成");
-
-}
-
-void CDigitalImageProcessDlg::OnGauss()
-{
-	// TODO: 在此添加命令处理程序代码
-	if (img.IsNull())
-		return;
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	//处理过的图像数据
-	ListImage destListImage;
-	pCF->Gauss(*m_ListImage, destListImage);
-	*m_ListImage = destListImage;
-
-	//数据写回
-	memcpy(processImg.m_pixel, m_ListImage->GetImgBuffer(), 2048 * 2099 * 2);
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-
-	MessageBox("Gauss已完成");
-}
-
-void CDigitalImageProcessDlg::OnGardSharp()
-{
-	// TODO: 在此添加命令处理程序代码
-	if (img.IsNull())
-		return;
-
-	GradSharpDlg dlg;
-	dlg.DoModal();
-
-	unsigned int thre = atoi(dlg.GradSharpThre);
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	//处理过的图像数据
-	ListImage destListImage;
-	pCF->GradSharp(*m_ListImage, destListImage, thre);
-	*m_ListImage = destListImage;
-
-	//数据写回
-	memcpy(processImg.m_pixel, m_ListImage->GetImgBuffer(), 2048 * 2099 * 2);
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-	MessageBox("GardSharp已完成");
-}
-
-void CDigitalImageProcessDlg::OnCanny()
-{
-	// TODO: 在此添加命令处理程序代码
-	if (img.IsNull())
-		return;
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	//处理过的图像数据
-	ListImage destListImage;
-	pCF->Canny(*m_ListImage, destListImage, 0, 0.9, 0.9);//, 1, 2, 3);
-	*m_ListImage = destListImage;
-
-	//数据写回
-	memcpy(processImg.m_pixel, m_ListImage->GetImgBuffer(), 2048 * 2099 * 2);
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-
-	MessageBox("Canny已完成");
 }
 
 BOOL CDigitalImageProcessDlg::OnEraseBkgnd(CDC* pDC)
@@ -971,294 +633,6 @@ void  CDigitalImageProcessDlg::callBackFun(int low, int high, int flag)
 
 	//图像显示
 	pThis->Invalidate();//强制调用OnDraw函数
-}
-
-void CDigitalImageProcessDlg::OnLungFetch()
-/*
-{
-if ( img.IsNull() )
-return ;
-
-//数据处理
-m_ListImage->SetSize(2048,2099);
-m_ListImage->SetChannel(1);
-m_ListImage->SetType(uint_16);
-m_ListImage->SetData((unsigned char*)processImg.m_pixel,2048*2099*2);
-
-// 中值滤波
-pTemp->fCoef = 1;
-pTemp->iTempH = 3;
-pTemp->iTempW = 3;
-pTemp->iTempMX = 1;
-pTemp->iTempMY = 1;
-
-pTemp->fpArray = new float[pTemp->iTempH * pTemp->iTempW];
-for ( int i = 0; i < pTemp->iTempH * pTemp->iTempW; i++ )
-{
-pTemp->fpArray[i] = 1;
-}
-ListImage destListImage;
-pCF->SetFK(*pTemp);
-pCF->MedianFilter(m_ListImage, destListImage);
-*m_ListImage = destListImage;
-
-//阈值变换
-pPT->ThresholdTrans(m_ListImage, 3000);
-
-int posLeft;    // 左肺种子的位置
-int posRight;    // 右肺种子的位置
-
-for(int i = 2800000; i< 2048*2099*2;i++)
-{
-if (m_ListImage->GetImgBuffer()[i] == 255)
-{
-posRight = i;
-break;
-}
-}
-for(int i = 2670000; i< 2048*2099*2;i++)
-{
-if (m_ListImage->GetImgBuffer()[i] == 255)
-{
-posLeft =  i;
-break;
-}
-}
-
-point2di pointLeft(posLeft%2048, posLeft/2048); // 左肺种子的坐标
-point2di pointRight(posRight%2048, posRight/2048);// 右肺种子的坐标
-
-/*for (int i=posLeft-200; i<posLeft-100; i++)
-{
-m_ListImage->GetImgBuffer()[i] = 255;
-}/
-
-m_ListImage->SetData((unsigned char*)processImg.m_pixel,2048*2099*2);
-
-//处理过的图像数据
-ListImage destListImage1;
-pMorphy->Fillneighbour1(m_ListImage, destListImage, pointLeft, 120);
-pMorphy->Fillneighbour1(m_ListImage, destListImage1, pointRight, 120);
-
-for (int i=0; i<2048*2099*2; i++)
-{
-destListImage.GetImgBuffer()[i] += destListImage1.GetImgBuffer()[i];
-}
-*m_ListImage = destListImage;
-
-for (int i=posLeft-200; i<posLeft+100; i++)
-{
-m_ListImage->GetImgBuffer()[i] = 255;
-}
-
-//数据写回
-memcpy(processImg.m_pixel,m_ListImage->GetImgBuffer(),2048*2099*2);
-
-processImg.setCImageFast(img);
-
-//图像显示
-Invalidate();//强制调用OnDraw函数
-
-MessageBox("肺部提取已完成");
-}
-*/
-
-{
-	////是否存在图像
-	//if ( img.IsNull() ) 
-	//	return ;
-	//unsigned char *p =  new unsigned char[2*2048*2099];
-	//memcpy(p, processImg.m_pixel, 2*2048*2099);
-	////数据处理
-	//unsigned short* pp = (unsigned short*)p;
-	//unsigned char* ppp = new unsigned char[2048*2099+1];
-	//for(int i = 0; i< 2048*2099;i++)
-	//{
-	//	ppp[i] = ( unsigned char)(pp[i]/256);
-	//}
-
-	//m_ListImage->SetSize(2048,2099);
-	//m_ListImage->SetChannel(1);
-	//m_ListImage->SetType(uint_8);
-	//m_ListImage->SetData(ppp,2048*2099);
-	////处理过的图像数据
-	//ListImage destListImage;
-	//pCF->SetFK(*pTemp);
-	//pCF->MedianFilter(*m_ListImage,destListImage,mode);
-	//*m_ListImage = destListImage;
-
-	////数据写回
-	//memcpy(ppp,m_ListImage->GetImgBuffer(),2048*2099);
-	//for(int i = 0; i< 2048*2099;i++)
-	//{
-	//	pp[i] = (( unsigned int)ppp[i])*256;
-	//}
-	//// processImg.m_pixel = (unsigned char *)pp;
-	//p =  (unsigned char *)pp;
-
-	////数据处理
-	//pp = (unsigned short*)p;
-	//ppp = new unsigned char[2048*2099+1];
-	//for(int i = 0; i< 2048*2099;i++)
-	//{
-	//	ppp[i] = ( unsigned char)(pp[i]/256);
-	//}
-
-	//m_ListImage->SetSize(2048,2099);
-	//m_ListImage->SetChannel(1);
-	//m_ListImage->SetType(uint_8);
-	//m_ListImage->SetData(ppp,2048*2099);
-
-	////ListImage xx;
-	//pPT->ThresholdTrans8(m_ListImage, 3500/256);
-
-	////数据写回
-	//memcpy(ppp,m_ListImage->GetImgBuffer(),2048*2099);
-
-	//for(int i = 0; i< 2048*2099;i++)
-	//{
-	//	pp[i] = (( unsigned int)ppp[i])*256;
-	//}
-	//ppp = (unsigned char *)pp;
-
-
-	if (img.IsNull())
-		return;
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	// 中值滤波
-	pTemp->fCoef = 1;
-	pTemp->iTempH = 3;
-	pTemp->iTempW = 3;
-	pTemp->iTempMX = 1;
-	pTemp->iTempMY = 1;
-
-	pTemp->fpArray = new float[pTemp->iTempH * pTemp->iTempW];
-	for (int i = 0; i < pTemp->iTempH * pTemp->iTempW; i++)
-	{
-		pTemp->fpArray[i] = 1;
-	}
-	ListImage destListImage;
-	pCF->SetFK(*pTemp);
-	pCF->MedianFilter(m_ListImage, destListImage);
-	*m_ListImage = destListImage;
-
-	//阈值变换
-	pPT->ThresholdTrans16(m_ListImage, 3000);
-
-
-	//数据处理
-	//pp = (unsigned short*)ppp;
-	unsigned short* pp = (unsigned short*)m_ListImage->GetImgBuffer();
-	unsigned char * ppp = new unsigned char[2048 * 2099 + 1];
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		ppp[i] = (unsigned char)(pp[i] / 256);
-	}
-
-	int posLeft;    // 左肺种子的位置
-	int posRight;    // 右肺种子的位置
-	int flag;
-	for (int j = 550; j < 1000; j++)
-	{
-		for (int i = 1024; i < 2048; i++)
-		{
-			flag = true;
-			if (ppp[j * 2048 + i] == 255)
-			{
-				posRight = j * 2048 + i;
-				break;
-			}
-		}
-	}
-
-	for (int i = 1300000; i < 2048 * 2099 / 2; i++)
-	{
-		flag = true;
-		if (ppp[i] == 255)
-		{
-			posLeft = i;
-			break;
-		}
-	}
-
-	/*
-	for (int i=posLeft-200; i<posLeft+200; i++)
-	{
-	ppp[i] = 255;
-	}
-	for (int i=posRight-200; i<posRight+200; i++)
-	{
-	ppp[i] = 255;
-	}
-	//*/
-
-
-	///*
-	ppp = (unsigned char *)processImg.m_pixel;
-	pp = (unsigned short*)ppp;
-	ppp = new unsigned char[2048 * 2099 + 1];
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		ppp[i] = (unsigned char)(pp[i] / 256);
-	}
-
-	point2di pointLeft(posLeft % 2048, posLeft / 2048);
-	point2di pointRight(posRight % 2048, posRight / 2048);
-	int b = ppp[x * 2048 + y];
-	b = ppp[posLeft];
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_8);
-	m_ListImage->SetData(ppp, 2048 * 2099);
-	ListImage destListImage1;
-	morphy.Fillneighbour1(m_ListImage, destListImage1, pointLeft, 4);
-	morphy.Fillneighbour1(m_ListImage, destListImage, pointRight, 4);
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		destListImage.GetImgBuffer()[i] += destListImage1.GetImgBuffer()[i];
-	}
-	*m_ListImage = destListImage;
-	memcpy(ppp, m_ListImage->GetImgBuffer(), 2048 * 2099);
-	//*/
-	////膨胀腐蚀
-	//m_ListImage->SetData(ppp,2048*2099);	
-	morphy.Erode_8(*m_ListImage, destListImage1);
-	//morphy.Erode_8(destListImage1,*m_ListImage);
-	//morphy.Erode_8(*m_ListImage, destListImage1);
-	*m_ListImage = destListImage1;
-	memcpy(ppp, m_ListImage->GetImgBuffer(), 2048 * 2099);
-
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		pp[i] = ((unsigned short)ppp[i]) * 256;
-	}
-	processImg.m_pixel = (unsigned short *)pp;
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-}
-void CDigitalImageProcessDlg::OnReplaceImage()
-{
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		if (processImg.m_pixel[i] != 0)
-		{
-			processImg.m_pixel[i] = processImg.originData[i];
-		}
-	}
-	processImg.m_lung = new unsigned short[2048 * 2099];
-	memcpy(processImg.m_lung, processImg.m_pixel, 2048 * 2099 * 2);
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
 }
 
 void CDigitalImageProcessDlg::OnOpenPkg()

@@ -211,10 +211,8 @@
     <ClCompile Include="ConvFilter.cpp" />
     <ClCompile Include="DigitalImageProcess.cpp" />
     <ClCompile Include="DigitalImageProcessDlg.cpp" />
-    <ClCompile Include="DlgAnyFilter.cpp" />
-    <ClCompile Include="DlgMedianFilter.cpp" />
-    <ClCompile Include="GradSharpDlg.cpp" />
-    <ClCompile Include="GrayStretchDialog.cpp" />
+    <ClCompile Include="AnyFilterDlg.cpp" />
+    <ClCompile Include="GrayStretchDlg.cpp" />
     <ClCompile Include="IntensityDlg.cpp" />
     <ClCompile Include="ListImage.cpp" />
     <ClCompile Include="Morphy.cpp" />
@@ -227,31 +225,23 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ThresholdDialog.cpp" />
-    <ClCompile Include="UnsharpMaskingDlg.cpp" />
-    <ClCompile Include="WindowDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConvFilter.h" />
     <ClInclude Include="DigitalImageProcess.h" />
     <ClInclude Include="DigitalImageProcessDlg.h" />
-    <ClInclude Include="DlgAnyFilter.h" />
-    <ClInclude Include="DlgMedianFilter.h" />
-    <ClInclude Include="GradSharpDlg.h" />
-    <ClInclude Include="GrayStretchDialog.h" />
+    <ClInclude Include="AnyFilterDlg.h" />
+    <ClInclude Include="GrayStretchDlg.h" />
     <ClInclude Include="IntensityDlg.h" />
     <ClInclude Include="ListImage.h" />
     <ClInclude Include="Morphy.h" />
     <ClInclude Include="PointDef.h" />
     <ClInclude Include="pointTrans.h" />
     <ClInclude Include="ProcessImage.h" />
-    <ClInclude Include="Resource.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="SecurityImage.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="ThresholdDialog.h" />
-    <ClInclude Include="UnsharpMaskingDlg.h" />
-    <ClInclude Include="WindowDialog.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\DigitalImageProcess.ico" />

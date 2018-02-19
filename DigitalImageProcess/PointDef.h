@@ -8,35 +8,35 @@ class point2df;
 class  point2di
 {
 public:
-	point2di(){x=0;y=0;};
-	point2di(int ix, int iy){x=ix;y=iy;};
-	point2di(float fx, float fy){x=fx;y=fy;};
-	point2di(point2di &pt){x=pt.x;y=pt.y;};
+	point2di(){ x = 0; y = 0; };
+	point2di(int ix, int iy){ x = ix; y = iy; };
+	point2di(float fx, float fy){ x = static_cast<int>(fx); y = static_cast<int>(fy); };
+	point2di(point2di &pt){ x = pt.x; y = pt.y; };
 	point2di(point2df &pt);
 
 	~point2di(){};
 
-	point2di operator + (point2di &a) {return point2di(x+a.x,y+a.y);};
-	point2di operator - (point2di &a) {return point2di(x-a.x,y-a.y);};
-	point2di operator * (point2di &a) {return point2di(x*a.x,y*a.y);};
-	point2di operator / (point2di &a) {return point2di(x/a.x,y/a.y);};
-	point2di & operator = (point2di &a) {x=a.x;y=a.y;return *this;};
+	point2di operator + (point2di &a) { return point2di(x + a.x, y + a.y); };
+	point2di operator - (point2di &a) { return point2di(x - a.x, y - a.y); };
+	point2di operator * (point2di &a) { return point2di(x*a.x, y*a.y); };
+	point2di operator / (point2di &a) { return point2di(x / a.x, y / a.y); };
+	point2di & operator = (point2di &a) { x = a.x; y = a.y; return *this; };
 
-	point2di operator + (int i) {return point2di(x+i,y+i);};
-	point2di operator - (int i) {return point2di(x-i,y-i);};
-	point2di operator * (int i) {return point2di(x*i,y*i);};
-	point2di operator / (int i) {return point2di(x/i,y/i);};
-	point2di & operator = (int i) {x=i;y=i;return *this;};
+	point2di operator + (int i) { return point2di(x + i, y + i); };
+	point2di operator - (int i) { return point2di(x - i, y - i); };
+	point2di operator * (int i) { return point2di(x*i, y*i); };
+	point2di operator / (int i) { return point2di(x / i, y / i); };
+	point2di & operator = (int i) { x = i; y = i; return *this; };
 
-	point2di operator + (float f) {return point2di(x+f,y+f);};
-	point2di operator - (float f) {return point2di(x-f,y-f);};
-	point2di operator * (float f) {return point2di(x*f,y*f);};
-	point2di operator / (float f) {return point2di(x/f,y/f);};
-	point2di & operator = (float f) {x=f;y=f;return *this;};
+	point2di operator + (float f) { return point2di(x + f, y + f); };
+	point2di operator - (float f) { return point2di(x - f, y - f); };
+	point2di operator * (float f) { return point2di(x*f, y*f); };
+	point2di operator / (float f) { return point2di(x / f, y / f); };
+	point2di & operator = (float f) { x = f; y = f; return *this; };
 
-	bool operator == (point2di &a) {return (x==a.x) && (y==a.y);}; 
-	bool operator != (point2di &a) {return (x!=a.x) || (y!=a.y);}; 
-	
+	bool operator == (point2di &a) { return (x == a.x) && (y == a.y); };
+	bool operator != (point2di &a) { return (x != a.x) || (y != a.y); };
+
 
 	/*
 	判断参数点是否在当前点的左侧
@@ -68,31 +68,31 @@ public:
 class  point2df
 {
 public:
-	point2df(){x=0;y=0;};
-	point2df(int ix, int iy){x=ix;y=iy;};
-	point2df(float fx, float fy){x=fx;y=fy;};
-	point2df(point2di &pt){x=pt.x;y=pt.y;};
-	point2df(point2df &pt){x=pt.x;y=pt.y;};
+	point2df(){ x = 0; y = 0; };
+	point2df(int ix, int iy){ x = ix; y = iy; };
+	point2df(float fx, float fy){ x = fx; y = fy; };
+	point2df(point2di &pt){ x = pt.x; y = pt.y; };
+	point2df(point2df &pt){ x = pt.x; y = pt.y; };
 
 	~point2df(){};
 
-	point2df operator + (point2df &a) {return point2df(x+a.x,y+a.y);};
-	point2df operator - (point2df &a) {return point2df(x-a.x,y-a.y);};
-	point2df operator * (point2df &a) {return point2df(x*a.x,y*a.y);};
-	point2df operator / (point2df &a) {return point2df(x/a.x,y/a.y);};
-	point2df & operator = (point2df &a) {x=a.x;y=a.y;return *this;};
+	point2df operator + (point2df &a) { return point2df(x + a.x, y + a.y); };
+	point2df operator - (point2df &a) { return point2df(x - a.x, y - a.y); };
+	point2df operator * (point2df &a) { return point2df(x*a.x, y*a.y); };
+	point2df operator / (point2df &a) { return point2df(x / a.x, y / a.y); };
+	point2df & operator = (point2df &a) { x = a.x; y = a.y; return *this; };
 
-	point2df operator + (int i) {return point2df(x+i,y+i);};
-	point2df operator - (int i) {return point2df(x-i,y-i);};
-	point2df operator * (int i) {return point2df(x*i,y*i);};
-	point2df operator / (int i) {return point2df(x/i,y/i);};
-	point2df & operator = (int i) {x=i;y=i;return *this;};
+	point2df operator + (int i) { return point2df(x + i, y + i); };
+	point2df operator - (int i) { return point2df(x - i, y - i); };
+	point2df operator * (int i) { return point2df(x*i, y*i); };
+	point2df operator / (int i) { return point2df(x / i, y / i); };
+	point2df & operator = (int i) { x = i; y = i; return *this; };
 
-	point2df operator + (float f) {return point2df(x+f,y+f);};
-	point2df operator - (float f) {return point2df(x-f,y-f);};
-	point2df operator * (float f) {return point2df(x*f,y*f);};
-	point2df operator / (float f) {return point2df(x/f,y/f);};
-	point2df & operator = (float f) {x=f;y=f;return *this;};
+	point2df operator + (float f) { return point2df(x + f, y + f); };
+	point2df operator - (float f) { return point2df(x - f, y - f); };
+	point2df operator * (float f) { return point2df(x*f, y*f); };
+	point2df operator / (float f) { return point2df(x / f, y / f); };
+	point2df & operator = (float f) { x = f; y = f; return *this; };
 
 
 	/*同point2di内的定义类似*/
@@ -124,41 +124,41 @@ public:
 		iTempMX = 1;
 		iTempMY = 1;
 		fpArray = new float[iTempH * iTempW];
-		
-		for( int i = 0; i < iTempH * iTempW; i++ )
+
+		for (int i = 0; i < iTempH * iTempW; i++)
 		{
 			fpArray[i] = 1;
 		}
 	}
-	FilterKernel & operator = (FilterKernel &Temp) 
+	FilterKernel & operator = (FilterKernel &Temp)
 	{
 		fCoef = Temp.fCoef;
 		iTempH = Temp.iTempH;
 		iTempW = Temp.iTempW;
 		iTempMX = Temp.iTempMX;
 		iTempMY = Temp.iTempMY;
-		if( Temp.fpArray != NULL )
+		if (Temp.fpArray != NULL)
 		{
 			fpArray = new float[iTempH * iTempW];
-			for( int i = 0; i < iTempH * iTempW; i++ )
+			for (int i = 0; i < iTempH * iTempW; i++)
 			{
 				fpArray[i] = Temp.fpArray[i];
 			}
 		}
 		return *this;
 	};
-	int SetFilterKernel( int H,int W,int MX,int MY,float* fA = NULL,float fc = 0.11 )
+	int SetFilterKernel(int H, int W, int MX, int MY, float* fA = NULL, float fc = 0.11)
 	{
 		fCoef = fc;
 		iTempH = H;
 		iTempW = W;
 		iTempMX = MX;
 		iTempMY = MY;
-		if( fA != NULL )
+		if (fA != NULL)
 		{
 			fpArray = new float[iTempH * iTempW];
-			
-			for( int i = 0; i < iTempH * iTempW; i++ )
+
+			for (int i = 0; i < iTempH * iTempW; i++)
 			{
 				fpArray[i] = fA[i];
 			}
@@ -167,11 +167,11 @@ public:
 	}
 	~FilterKernel()
 	{
-		if(fpArray != NULL)
+		if (fpArray != NULL)
 		{
-			delete []fpArray;
+			delete[]fpArray;
 		}
-		
+
 	}
 };
 

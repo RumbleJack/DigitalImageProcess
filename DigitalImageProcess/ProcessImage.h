@@ -17,9 +17,9 @@ public:
 	void setCImageFast(CImage &img);
 
 	// 由文件读入图像
-	bool readIn(const char *filename);
+	bool readFile(const char *filename);
 
-	int get_total(char *fileName);
+
 
 public:
 	//处理过程中的数据

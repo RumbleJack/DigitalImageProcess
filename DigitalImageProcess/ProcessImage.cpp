@@ -64,7 +64,7 @@ void ProcessImage::setCImageFast(CImage &img)
 	}
 }
 
-bool ProcessImage::readIn(const char * file)
+bool ProcessImage::readFile(const char * file)
 {
 	ifstream in(file, ios::in | ios::binary);
 	if (!in)
@@ -88,18 +88,4 @@ bool ProcessImage::readIn(const char * file)
 	return true;
 }
 
-int ProcessImage::get_total(char* fileName)
-{
-	double sign=0;  
-	int number;  
-	fstream f(fileName,ios::in|ios::out|ios::binary );  
-	while (!f.fail())  
-	{   
-		number=f.get();   
-		sign++;  
-	}  
-	number=sqrt(sign);  
-	f.close();  
-	return number;
-}
 

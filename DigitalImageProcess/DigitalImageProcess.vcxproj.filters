@@ -42,28 +42,7 @@
     <ClCompile Include="DigitalImageProcessDlg.cpp">
       <Filter>对话框类</Filter>
     </ClCompile>
-    <ClCompile Include="DlgAnyFilter.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="DlgMedianFilter.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="GradSharpDlg.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="GrayStretchDialog.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
     <ClCompile Include="IntensityDlg.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="ThresholdDialog.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="UnsharpMaskingDlg.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="WindowDialog.cpp">
       <Filter>对话框类</Filter>
     </ClCompile>
     <ClCompile Include="ProcessImage.cpp">
@@ -72,12 +51,15 @@
     <ClCompile Include="SecurityImage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="AnyFilterDlg.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
+    <ClCompile Include="GrayStretchDlg.cpp">
+      <Filter>对话框类</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DigitalImageProcess.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -107,32 +89,20 @@
     <ClInclude Include="DigitalImageProcessDlg.h">
       <Filter>对话框类</Filter>
     </ClInclude>
-    <ClInclude Include="DlgAnyFilter.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
-    <ClInclude Include="DlgMedianFilter.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
-    <ClInclude Include="GradSharpDlg.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
-    <ClInclude Include="GrayStretchDialog.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
     <ClInclude Include="IntensityDlg.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
-    <ClInclude Include="ThresholdDialog.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
-    <ClInclude Include="UnsharpMaskingDlg.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowDialog.h">
       <Filter>对话框类</Filter>
     </ClInclude>
     <ClInclude Include="SecurityImage.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="AnyFilterDlg.h">
+      <Filter>对话框类</Filter>
+    </ClInclude>
+    <ClInclude Include="GrayStretchDlg.h">
+      <Filter>对话框类</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
