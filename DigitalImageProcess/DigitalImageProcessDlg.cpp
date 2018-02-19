@@ -4,6 +4,9 @@
 #include "DigitalImageProcess.h"
 #include "DigitalImageProcessDlg.h"
 
+#include "ShowSIDlg.h"
+#include "resource.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -39,8 +42,6 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
 
-CDigitalImageProcessDlg* CDigitalImageProcessDlg::pThis = NULL;
-
 // CDigitalImageProcessDlg 对话框
 CDigitalImageProcessDlg::CDigitalImageProcessDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CDigitalImageProcessDlg::IDD, pParent)
@@ -50,15 +51,11 @@ CDigitalImageProcessDlg::CDigitalImageProcessDlg(CWnd* pParent /*=NULL*/)
 
 CDigitalImageProcessDlg::~CDigitalImageProcessDlg()
 {
-	if(!img.IsNull())
+	if(!m_pCImage->IsNull())
 	{
-		img.Destroy();
+		m_pCImage->Destroy();
 	}
-	delete m_SecurityImage;
-	delete m_ListImage;
-	delete pCF;
-	delete pTemp;
-	delete pMorphy;
+	delete m_pSecurityImage;
 }
 
 void CDigitalImageProcessDlg::DoDataExchange(CDataExchange* pDX)
@@ -84,12 +81,10 @@ BEGIN_MESSAGE_MAP(CDigitalImageProcessDlg, CDialog)
 	ON_WM_ERASEBKGND()
 
 	// 自定义事件响应
-	ON_COMMAND(ID_GrayStretch, &CDigitalImageProcessDlg::SelectGrayStretch) //窗宽窗位调整
-	ON_COMMAND(ID_OpenRaw, &CDigitalImageProcessDlg::OnOpenRaw)
-	ON_COMMAND(ID_RecoveryOriginImage, &CDigitalImageProcessDlg::OnRecoveryOriginImage)
-	ON_COMMAND(ID_DrawIntensity, &CDigitalImageProcessDlg::OnDrawIntensity)
-	ON_COMMAND(ID_AnyFilter, &CDigitalImageProcessDlg::OnAnyFilter)
-	ON_COMMAND(ID_OpenPkg, &CDigitalImageProcessDlg::OnOpenPkg)
+	ON_COMMAND(ID_EnSEILow, &CDigitalImageProcessDlg::OnEnSingleEnergyImageLow)
+	ON_COMMAND(ID_EnSEIHigh, &CDigitalImageProcessDlg::OnEnSingleEnergyImageHigh)
+	ON_COMMAND(ID_EnDEIBat, &CDigitalImageProcessDlg::OnEnDualEnergyImageBat)
+	
 END_MESSAGE_MAP()
 
 
@@ -127,6 +122,15 @@ BOOL CDigitalImageProcessDlg::OnInitDialog()
 	
 	// 定义窗口初始化显示方式
 	ShowWindow(SW_SHOWMAXIMIZED);
+	//// 初始化对话框位置
+	//int   cx, cy;
+	//cx = GetSystemMetrics(SM_CXSCREEN);
+	//cy = GetSystemMetrics(SM_CYSCREEN)-40 ;
+	////再用MoveWindow
+	//CRect   rcTemp;
+	//rcTemp.TopLeft() = CPoint(0, 0);
+	//rcTemp.BottomRight() = CPoint(cx, cy);
+	//MoveWindow(&rcTemp);
 
 	// 给对话框添加滚动条 SB_VERT：垂直方向，SB_HORZ：水平方向
 	CRect rc;
@@ -142,30 +146,15 @@ BOOL CDigitalImageProcessDlg::OnInitDialog()
 	si.nMax = rc.Width();
 	si.nPage = rc.Width()/5;
 	SetScrollInfo(SB_HORZ, &si, FALSE);
-
-	int   cx, cy;
-	cx = GetSystemMetrics(SM_CXSCREEN);
-	cy = GetSystemMetrics(SM_CYSCREEN) - 40;
-
-	//再用MoveWindow
-	CRect   rcTemp;
-	rcTemp.BottomRight() = CPoint(cx, cy);
-	rcTemp.TopLeft() = CPoint(0, 0);
-	MoveWindow(&rcTemp);
-
-	m_ListImage = new ListImage();
-	pCF = new ConvFilter();
-	pTemp = new FilterKernel();
-	pMorphy = new Morphy();
-
-	//m_ListImage = img;
-	mode = 0;
-
 	// 默认滚轮图片纵向滑动
 	vhFlag = 1;
 
-	// 静态指针赋值
-	pThis = this;
+	// 指针变量初始化
+	m_pCImage = new CImage;
+	m_pSecurityImage = new SecurityImage();
+
+	// 指定当前显示图像
+	m_showStatus = SHOW_STATUS::NOTHING;
 
 	// 除非将焦点设置到控件，否则返回 TRUE
 	return TRUE;
@@ -187,6 +176,7 @@ void CDigitalImageProcessDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  如果向对话框添加最小化按钮，则需要下面的代码
 //  来绘制该图标。对于使用文档/视图模型的 MFC 应用程序，
 //  这将由框架自动完成。
+
 void CDigitalImageProcessDlg::OnPaint()
 {
 	Invalidate(1);
@@ -216,7 +206,7 @@ void CDigitalImageProcessDlg::OnPaint()
 		SetStretchBltMode(dc.GetSafeHdc(), HALFTONE);
 		// SetBrushOrgEx(dc.GetSafeHdc(),0,0,NULL);
 
-		if (!img.IsNull())
+		if (!m_pCImage->IsNull())
 		{
 			// 获取滚动条的逻辑位置posH、posV
 			SCROLLINFO vinfoH;
@@ -227,18 +217,19 @@ void CDigitalImageProcessDlg::OnPaint()
 			int posV = vinfoV.nPos;
 
 			// 根据需要显示图像尺寸定义矩形（设置2个二维坐标）
+			int width = m_pSecurityImage->col;
+			int height = m_pSecurityImage->row;
 			CRect rect;
-			rect.SetRect(x, y, m_ImageW, m_ImageH);
+			rect.SetRect(0,0, width, height);
 
 			// 设置图片绘制范围（设置2个二维坐标）乘以0.8是由于posH，posV最大值是0.8Max
-			rect.SetRect(rect.TopLeft().x - (m_ImageW / (vinfoH.nMax*0.8) )*posH,
-				rect.TopLeft().y - (m_ImageH / (vinfoV.nMax*0.8) )*posV,
-				rect.BottomRight().x - (m_ImageW / (vinfoH.nMax*0.8))*posH,
-				rect.BottomRight().y - (m_ImageH / (vinfoV.nMax*0.8))*posV);
-
-			/*GetClientRect(&rect);*/
+			rect.SetRect(rect.TopLeft().x - (width / (vinfoH.nMax*0.8))*posH,
+				rect.TopLeft().y - (height / (vinfoV.nMax*0.8))*posV,
+				rect.BottomRight().x - (width / (vinfoH.nMax*0.8))*posH,
+				rect.BottomRight().y - (height / (vinfoV.nMax*0.8))*posV);
+			//GetClientRect(&rect);
 			// 使用CImage绘制图片
-			img.Draw(dc.GetSafeHdc(), rect);
+			m_pCImage->Draw(dc.GetSafeHdc(), rect);
 		}
 
 		CDialog::OnPaint();
@@ -251,161 +242,11 @@ HCURSOR CDigitalImageProcessDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
-void CDigitalImageProcessDlg::OnOpenRaw()
-{
-	// 新建打开文件对话框
-	CFileDialog file(1);
-	file.m_ofn.lpstrTitle = _T("打开图片");
-
-	// 如果未点击确定则返回
-	if (file.DoModal() != IDOK)
-		return;
-
-	// 获取路径
-	CString fileName = file.GetPathName();
-
-	// CImage读入图像（CImage本身支持格式）
-	HRESULT ret = img.Load(fileName);
-	if (!FAILED(ret))
-	{
-		// 处理图像
-		return;
-	}
-
-	// ProcessImage读入图像（自定义格式）
-	processImg.readFile(fileName);
-	// 设置图像尺寸参数
-	x = 0;
-	y = 0;
-	m_ImageW = 2048;
-	m_ImageH = 2099;
-	if (!img.IsNull())
-		img.Destroy();
-	img.Create(m_ImageW, m_ImageH, 24);
-
-	processImg.flag = true;
-	//快速打开raw图片
-	processImg.setCImageFast(img);
-
-	// 使整个窗口客户区无效
-	Invalidate();
-}
-
-// 输入灰度拉伸的起始点和结束点
-void CDigitalImageProcessDlg::SelectGrayStretch()
-{
-	if (img.IsNull())
-		return;
-
-	//采用成员变量创建一个非模态对话框  
-	pGSD = new GrayStretchDlg(); //给指针分配内存  
-	pGSD->Create(IDD_GrayStretchDlg); //创建一个非模态对话框  
-	pGSD->ShowWindow(SW_SHOWNORMAL); //显示非模态对话框 
-	pGSD->setImageFlag(0);			//每次处理原始图像
-}
-
-void CDigitalImageProcessDlg::OnRecoveryOriginImage()
-{
-	if (img.IsNull())
-		return;
-
-	if (processImg.m_pixel != NULL)
-		delete processImg.m_pixel;
-
-	int len = 2 * img.GetHeight() * img.GetWidth();
-	processImg.m_pixel = new unsigned short[len / 2];
-	for (int i = 0; i < len / 2; i++)
-		processImg.m_pixel[i] = processImg.originData[i];
-
-	processImg.setCImageFast(img);
-
-	Invalidate();
-}
-
-void CDigitalImageProcessDlg::OnDrawIntensity()
-{
-	if (img.IsNull())
-		return;
-
-	//创建对话框
-	CIntensityDlg dlgdraw;
-
-	//初始化变量值
-	dlgdraw.m_lpDIBBits = new unsigned char[2048 * 2099];
-	for (int i = 0; i < 2048 * 2099; i++)
-	{
-		dlgdraw.m_lpDIBBits[i] = (unsigned char)(processImg.m_pixel[i] / 256);
-	}
-	//dlgdraw.m_lpDIBBits = processImg.m_pixel;
-	dlgdraw.m_lWidth = 2048;
-	dlgdraw.m_lHeight = 2099;
-	dlgdraw.m_iLowGray = 0;
-	dlgdraw.m_iUpGray = 65535;
-
-	//显示对话框
-	if (dlgdraw.DoModal() != IDOK)
-	{
-		return;
-	}
-}
-
-void CDigitalImageProcessDlg::OnAnyFilter()
-{
-	if (img.IsNull())
-		return;
-
-	//创建对话框
-	CAnyFilterDlg smooth;
-
-	//显示对话框
-	if (smooth.DoModal() != IDOK)
-	{
-		return;
-	}
-
-	//获取模板参数
-	pTemp->fCoef = smooth.m_fTempC;
-	pTemp->iTempH = smooth.m_iTempH;
-	pTemp->iTempW = smooth.m_iTempW;
-	pTemp->iTempMX = smooth.m_iTempMX;
-	pTemp->iTempMY = smooth.m_iTempMY;
-	pTemp->fpArray = new float[pTemp->iTempH * pTemp->iTempW];
-	for (int i = 0; i < pTemp->iTempH * pTemp->iTempW; i++)
-	{
-		pTemp->fpArray[i] = smooth.m_fpArray[i];
-	}
-
-	//是否存在图像
-	if (img.IsNull())
-		return;
-
-	//数据处理
-	m_ListImage->SetSize(2048, 2099);
-	m_ListImage->SetChannel(1);
-	m_ListImage->SetType(uint_16);
-	m_ListImage->SetData((unsigned char*)processImg.m_pixel, 2048 * 2099 * 2);
-
-	//处理过的图像数据
-	ListImage destListImage;
-	pCF->SetFK(*pTemp);
-	pCF->TemplateConv(*m_ListImage, destListImage, mode);
-	*m_ListImage = destListImage;
-
-	//数据写回
-	memcpy(processImg.m_pixel, m_ListImage->GetImgBuffer(), 2048 * 2099 * 2);
-	processImg.setCImageFast(img);
-
-	//图像显示
-	Invalidate();//强制调用OnDraw函数
-
-	MessageBox("滤波已完成");
-}
-
 BOOL CDigitalImageProcessDlg::OnEraseBkgnd(CDC* pDC)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 
-	// return CDialog::OnEraseBkgnd(pDC);
+	return CDialog::OnEraseBkgnd(pDC);
 	return true;
 }
 
@@ -598,44 +439,80 @@ void CDigitalImageProcessDlg::OnSize(UINT nType, int cx, int cy)
 
 }
 
-void  CDigitalImageProcessDlg::callBackFun(int low, int high, int flag)
+void CDigitalImageProcessDlg::OnEnSingleEnergyImageLow()
 {
-	if (pThis->img.IsNull())
+	// 新建打开文件对话框
+	CFileDialog file(1);
+	file.m_ofn.lpstrTitle = _T("打开图片");
+
+	// 如果未点击确定则返回
+	if (file.DoModal() != IDOK)
 		return;
 
-	//初始化
-	int countOfPix = 2048 * 2099;
-	unsigned short *srcData = new unsigned short[countOfPix];
+	// 获取路径
+	CString fileName = file.GetPathName();
 
-	if (flag == 0){
-		memcpy(srcData, pThis->processImg.originData, countOfPix * 2);
-	}
-	else
-	{
-		memcpy(srcData, pThis->processImg.m_lung, countOfPix * 2);
-	}
+	// ProcessImage读入图像（自定义格式）
+	m_pSecurityImage->readImageFromFile(fileName);
 
-	//数据处理
-	pThis->m_ListImage->SetSize(2048, 2099);
-	pThis->m_ListImage->SetChannel(1);
-	pThis->m_ListImage->SetType(uint_16);
-	pThis->m_ListImage->SetData((unsigned char*)srcData, countOfPix * 2);
+	// 填充CImage
+	if (!m_pCImage->IsNull())
+		m_pCImage->Destroy();
+	m_pCImage->Create(m_pSecurityImage->col, m_pSecurityImage->row, 24);
+	m_pSecurityImage->setCImageFast(m_pSecurityImage->getLowEnergyImage(),*m_pCImage);
 
-	pThis->pPT->GrayStretchUint_16(pThis->m_ListImage,
-		(unsigned short)low, 0,
-		(unsigned short)high, 65535);
-
-	//数据写回
-	memcpy((unsigned char*)pThis->processImg.m_pixel, pThis->m_ListImage->GetImgBuffer(), countOfPix * 2);
-	pThis->processImg.setCImageFast(pThis->img);
-
-	delete[] srcData;
-
-	//图像显示
-	pThis->Invalidate();//强制调用OnDraw函数
+	// 使整个窗口客户区无效
+	Invalidate();
 }
 
-void CDigitalImageProcessDlg::OnOpenPkg()
+void CDigitalImageProcessDlg::OnEnSingleEnergyImageHigh()
 {
-	// TODO:  在此添加命令处理程序代码
+	// 新建打开文件对话框
+	CFileDialog file(1);
+	file.m_ofn.lpstrTitle = _T("打开图片");
+
+	// 如果未点击确定则返回
+	if (file.DoModal() != IDOK)
+		return;
+
+	// 获取路径
+	CString fileName = file.GetPathName();
+
+	// ProcessImage读入图像（自定义格式）
+	m_pSecurityImage->readImageFromFile(fileName);
+
+	// 填充CImage
+	if (!m_pCImage->IsNull())
+		m_pCImage->Destroy();
+	m_pCImage->Create(m_pSecurityImage->col, m_pSecurityImage->row, 24);
+	m_pSecurityImage->setCImageFast(m_pSecurityImage->getHighEnergyImage(), *m_pCImage);
+
+	//// 显示在指定对话框中
+	//ShowSIDlg showSIDlg;
+	//showSIDlg.m_CImg = m_pCImage;
+	////显示对话框
+	//if (showSIDlg.DoModal() != IDOK)
+	//	return;
+
+	// 使整个窗口客户区无效
+	Invalidate();
 }
+
+void CDigitalImageProcessDlg::OnEnDualEnergyImageBat()
+{
+	// 新建打开文件对话框
+	CFileDialog file(1);
+	file.m_ofn.lpstrTitle = _T("打开路径文件");
+
+	// 如果未点击确定则返回
+	if (file.DoModal() != IDOK)
+		return;
+
+	// 获取路径
+	CString fileName = file.GetPathName();
+
+	// 批量处理图像
+	m_pSecurityImage->enhanceALL(string(fileName));
+}
+
+

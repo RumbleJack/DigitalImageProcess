@@ -11,15 +11,15 @@ public:
 	SecurityImage();
 	SecurityImage(SecurityImage& );
 	~SecurityImage();
-
+public:
+	// ÃÓ≥‰CImage
+	void setCImageFast(unsigned char* srcData, CImage &m_pCImage);
 public:
 	bool enhanceALL(string dataPathFileName);
-
 	bool readImageFromFile(const char* );
 	bool showImageUsingOpenCV();
 	bool saveSrcImageToFile(string = string(""), string = string(""));
 	bool saveResImageToFile(string = string(""));
-
 
 	bool setHighEnergyImage(unsigned char*);
 	bool setLowEnergyImage(unsigned char*);
@@ -27,15 +27,14 @@ public:
 	unsigned char* getLowEnergyImage();
 
 public:
-	unsigned int channel;
 	unsigned int row;
 	unsigned int col;
+	unsigned int channel;
 	unsigned int bytesOfPix;
 	unsigned int maxValOfImage;
 
 	char* imageFilePath;
 	string imageFileName;
-
 private:
 	unsigned char* highEnergyImage;
 	unsigned char* lowEnergyImage;

@@ -5,15 +5,16 @@
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
-
 #define IDD_DIGITALIMAGEPROCESS_DIALOG  102
-#define IDD_GrayStretchDlg              132
-#define IDD_DrawIntensity               135
-#define IDD_AnyFilter                   137
 #define IDR_HTML_INTENSITYDLG           103
 #define IDR_MAINFRAME                   128
 #define IDR_MENU_MAIN                   129
-
+#define IDR_MENU_MAIN1                  130
+#define IDR_MENU_ShowSIDlg              130
+#define IDD_GrayStretchDlg              132
+#define IDD_DrawIntensity               135
+#define IDD_AnyFilter                   137
+#define IDD_ShowSIDlg                   143
 #define IDC_PROGRESS1                   1002
 #define IDC_EDIT1                       1008
 #define IDC_EDIT2                       1009
@@ -55,8 +56,6 @@
 #define IDC_SLIDER1                     1042
 #define IDC_SLIDER2                     1043
 #define IDC_BUTTON1                     1044
-
-//Ö÷²Ëµ¥
 #define ID_GrayStretch                  32773
 #define ID_EnDEI                        32799
 #define ID_EnSEI                        32800
@@ -66,13 +65,16 @@
 #define ID_DrawIntensity                32806
 #define ID_AnyFilter                    32807
 #define ID_OpenPkg                      32808
+#define ID_32811                        32811
+#define ID_EnSEILow                     32812
+#define ID_EnSEIHigh                    32813
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        143
-#define _APS_NEXT_COMMAND_VALUE         32811
+#define _APS_NEXT_RESOURCE_VALUE        144
+#define _APS_NEXT_COMMAND_VALUE         32814
 #define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           104
 #endif

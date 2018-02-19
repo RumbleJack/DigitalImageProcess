@@ -193,6 +193,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>D:\Program Files (x86)\opencv-3.1.0\opencv\build\include;D:\Program Files (x86)\opencv-3.1.0\opencv\build\include\opencv;D:\Program Files (x86)\opencv-3.1.0\opencv\build\include\opencv2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -205,20 +206,15 @@
       <StackReserveSize>0</StackReserveSize>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <AdditionalDependencies>opencv_world310.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Program Files %28x86%29\opencv-3.1.0\opencv\build\x64\vc12\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ConvFilter.cpp" />
     <ClCompile Include="DigitalImageProcess.cpp" />
     <ClCompile Include="DigitalImageProcessDlg.cpp" />
-    <ClCompile Include="AnyFilterDlg.cpp" />
-    <ClCompile Include="GrayStretchDlg.cpp" />
-    <ClCompile Include="IntensityDlg.cpp" />
-    <ClCompile Include="ListImage.cpp" />
-    <ClCompile Include="Morphy.cpp" />
-    <ClCompile Include="PointTrans.cpp" />
-    <ClCompile Include="ProcessImage.cpp" />
     <ClCompile Include="SecurityImage.cpp" />
+    <ClCompile Include="ShowSIDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -227,19 +223,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ConvFilter.h" />
     <ClInclude Include="DigitalImageProcess.h" />
     <ClInclude Include="DigitalImageProcessDlg.h" />
-    <ClInclude Include="AnyFilterDlg.h" />
-    <ClInclude Include="GrayStretchDlg.h" />
-    <ClInclude Include="IntensityDlg.h" />
-    <ClInclude Include="ListImage.h" />
-    <ClInclude Include="Morphy.h" />
-    <ClInclude Include="PointDef.h" />
-    <ClInclude Include="pointTrans.h" />
-    <ClInclude Include="ProcessImage.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SecurityImage.h" />
+    <ClInclude Include="ShowSIDlg.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
@@ -250,6 +238,7 @@
     <ResourceCompile Include="DigitalImageProcess.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="res\DigitalImageProcess.rc2" />
   </ItemGroup>
   <ItemGroup>

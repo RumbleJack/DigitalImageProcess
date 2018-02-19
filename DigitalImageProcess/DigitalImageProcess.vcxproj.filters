@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="图像处理类">
-      <UniqueIdentifier>{2651a161-9f96-45d8-9f1b-30fce032d067}</UniqueIdentifier>
-    </Filter>
     <Filter Include="对话框类">
       <UniqueIdentifier>{02073023-b0a5-450f-8033-7cc7115f94df}</UniqueIdentifier>
     </Filter>
@@ -27,34 +24,13 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="ConvFilter.cpp">
-      <Filter>图像处理类</Filter>
-    </ClCompile>
-    <ClCompile Include="ListImage.cpp">
-      <Filter>图像处理类</Filter>
-    </ClCompile>
-    <ClCompile Include="Morphy.cpp">
-      <Filter>图像处理类</Filter>
-    </ClCompile>
-    <ClCompile Include="PointTrans.cpp">
-      <Filter>图像处理类</Filter>
-    </ClCompile>
     <ClCompile Include="DigitalImageProcessDlg.cpp">
       <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="IntensityDlg.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="ProcessImage.cpp">
-      <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SecurityImage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="AnyFilterDlg.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
-    <ClCompile Include="GrayStretchDlg.cpp">
+    <ClCompile Include="ShowSIDlg.cpp">
       <Filter>对话框类</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,28 +44,7 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="ConvFilter.h">
-      <Filter>图像处理类</Filter>
-    </ClInclude>
-    <ClInclude Include="ListImage.h">
-      <Filter>图像处理类</Filter>
-    </ClInclude>
-    <ClInclude Include="Morphy.h">
-      <Filter>图像处理类</Filter>
-    </ClInclude>
-    <ClInclude Include="PointDef.h">
-      <Filter>图像处理类</Filter>
-    </ClInclude>
-    <ClInclude Include="pointTrans.h">
-      <Filter>图像处理类</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessImage.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="DigitalImageProcessDlg.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
-    <ClInclude Include="IntensityDlg.h">
       <Filter>对话框类</Filter>
     </ClInclude>
     <ClInclude Include="SecurityImage.h">
@@ -98,10 +53,7 @@
     <ClInclude Include="resource.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="AnyFilterDlg.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
-    <ClInclude Include="GrayStretchDlg.h">
+    <ClInclude Include="ShowSIDlg.h">
       <Filter>对话框类</Filter>
     </ClInclude>
   </ItemGroup>
@@ -119,6 +71,7 @@
     <None Include="res\DigitalImageProcess.rc2">
       <Filter>资源文件</Filter>
     </None>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

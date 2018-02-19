@@ -222,15 +222,15 @@ bool SecurityImage::saveResImageToFile(string saveFilePath)
 	return true;
 }
 
-bool SecurityImage::setHighEnergyImage(unsigned char * img)
+bool SecurityImage::setHighEnergyImage(unsigned char * data)
 {
-	memcpy(highEnergyImage, reinterpret_cast<void*>(img), row*col*bytesOfPix);
+	memcpy(highEnergyImage, reinterpret_cast<void*>(data), row*col*bytesOfPix);
 	return true;
 }
 
-bool SecurityImage::setLowEnergyImage(unsigned char * img)
+bool SecurityImage::setLowEnergyImage(unsigned char * data)
 {
-	memcpy(lowEnergyImage, reinterpret_cast<void*>(img), row*col*bytesOfPix);
+	memcpy(lowEnergyImage, reinterpret_cast<void*>(data), row*col*bytesOfPix);
 	return true;
 }
 
@@ -242,4 +242,25 @@ unsigned char * SecurityImage::getHighEnergyImage()
 unsigned char * SecurityImage::getLowEnergyImage()
 {
 	return lowEnergyImage;
+}
+
+void SecurityImage::setCImageFast(unsigned char* srcData,CImage &AtlImg)
+{
+	// 获取图像属性
+	int maxY = AtlImg.GetHeight(), maxX = AtlImg.GetWidth();
+	byte* pRealData = (unsigned char *)AtlImg.GetBits();
+	int pit = AtlImg.GetPitch();
+	int bitCount = AtlImg.GetBPP() / 8;
+
+	// 设置CImage像素
+	int index = 0;
+	for (int y = 0; y < maxY; y++) {
+		for (int x = 0; x<maxX; x++) {
+			unsigned short temp = ((unsigned short*)srcData)[index] / (maxValOfImage/256.0);
+			*(pRealData + pit*y + x*bitCount) = (unsigned char)temp;
+			*(pRealData + pit*y + x*bitCount + 1) = (unsigned char)temp;
+			*(pRealData + pit*y + x*bitCount + 2) = (unsigned char)temp;
+			index++;
+		}
+	}
 }
