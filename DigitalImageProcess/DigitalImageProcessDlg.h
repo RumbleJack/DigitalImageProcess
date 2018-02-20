@@ -61,5 +61,9 @@ public:
 	SHOW_STATUS m_showStatus;
 
 
+	afx_msg void OnOpenpkg();
+	afx_msg void OnShowseilow();
+	afx_msg void OnShowseihigh();
+	afx_msg void OnEnDualEnergyImage();
 };
 

@@ -3,11 +3,17 @@
 #include <opencv2/highgui.hpp>
 using namespace cv;
 
+#include "myHomoFilter.h"
+#include "guidedfilter.h"
+#include "minFilter.h"
+
 SecurityImage::SecurityImage()
 {
 	highEnergyImage = nullptr;
 	lowEnergyImage = nullptr;
-	enhancedImage = nullptr;
+	enHighEnergyImage = nullptr;
+	enLowEnergyImage = nullptr;
+	enDualEnergyImage = nullptr;
 
 	imageFilePath = nullptr;
 }
@@ -19,12 +25,32 @@ SecurityImage::SecurityImage(SecurityImage &)
 
 SecurityImage::~SecurityImage()
 {
-	delete[]highEnergyImage;
-	highEnergyImage = nullptr;
-	delete[]lowEnergyImage;
-	lowEnergyImage = nullptr;
-	delete[]enhancedImage;
-	enhancedImage = nullptr;
+	if (highEnergyImage != nullptr)
+	{
+		delete[]highEnergyImage;
+		highEnergyImage = nullptr;
+	}
+	if (lowEnergyImage != nullptr)
+	{
+		delete[]lowEnergyImage;
+		lowEnergyImage = nullptr;
+	}
+	/*if (enDualEnergyImage != nullptr)
+	{
+		delete[]enDualEnergyImage;
+		enDualEnergyImage = nullptr;
+	}
+	if (enLowEnergyImage != nullptr)
+	{
+		delete[]enLowEnergyImage;
+		enLowEnergyImage = nullptr;
+	}
+	if (enHighEnergyImage != nullptr)
+	{
+		delete[]enHighEnergyImage;
+		enHighEnergyImage = nullptr;
+	}*/
+
 	delete imageFilePath;
 	imageFilePath = nullptr;
 }
@@ -42,12 +68,12 @@ bool SecurityImage::enhanceALL(string dataPathFileName)
 		//mySImage.showImageUsingOpenCV();
 
 		// 保存原始数据
-		saveSrcImageToFile();
+		// saveSrcImageToFile();
 
 		// 处理原始数据
 
 		// 保存处理数据
-		// saveResImageToFile();
+		saveResImageToFile();
 	}
 	return true;
 }
@@ -160,8 +186,8 @@ bool SecurityImage::saveSrcImageToFile(string saveFilePathHigh, string saveFileP
 	}
 
 	// 定义用于保存图像的Mat矩阵
-	Mat imageToSaveHigh(row, col, CV_16SC1, highEnergyImage);
-	Mat imageToSaveLow(row, col, CV_16SC1, lowEnergyImage);
+	Mat imageToSaveHigh(row, col, CV_16UC1, highEnergyImage);
+	Mat imageToSaveLow(row, col, CV_16UC1, lowEnergyImage);
 
 	// 利用像素最大值归一化
 	imageToSaveHigh.convertTo(imageToSaveHigh, CV_32FC1);
@@ -203,11 +229,11 @@ bool SecurityImage::saveResImageToFile(string saveFilePath)
 	}
 
 	// 判断增强结果是否为空
-	if (enhancedImage == nullptr)
+	if (enDualEnergyImage == nullptr)
 		return false;
 
 	// 定义用于保存图像的Mat矩阵
-	Mat imageToSaveRes(row, col, CV_16SC1, enhancedImage);
+	Mat imageToSaveRes(row, col, CV_16UC1, enDualEnergyImage);
 
 	// 利用像素最大值归一化
 	imageToSaveRes.convertTo(imageToSaveRes, CV_32FC1);
@@ -244,8 +270,22 @@ unsigned char * SecurityImage::getLowEnergyImage()
 	return lowEnergyImage;
 }
 
+unsigned char* SecurityImage::getEnHighEnergyImage()
+{
+	return enHighEnergyImage;
+}
+unsigned char* SecurityImage::getEnLowEnergyImage()
+{
+	return enLowEnergyImage;
+}
+unsigned char* SecurityImage::getEnDualEnergyImage()
+{
+	return enDualEnergyImage;
+}
 void SecurityImage::setCImageFast(unsigned char* srcData,CImage &AtlImg)
 {
+	if (srcData == nullptr)
+		return;
 	// 获取图像属性
 	int maxY = AtlImg.GetHeight(), maxX = AtlImg.GetWidth();
 	byte* pRealData = (unsigned char *)AtlImg.GetBits();
@@ -256,11 +296,106 @@ void SecurityImage::setCImageFast(unsigned char* srcData,CImage &AtlImg)
 	int index = 0;
 	for (int y = 0; y < maxY; y++) {
 		for (int x = 0; x<maxX; x++) {
-			unsigned short temp = ((unsigned short*)srcData)[index] / (maxValOfImage/256.0);
-			*(pRealData + pit*y + x*bitCount) = (unsigned char)temp;
-			*(pRealData + pit*y + x*bitCount + 1) = (unsigned char)temp;
-			*(pRealData + pit*y + x*bitCount + 2) = (unsigned char)temp;
+			unsigned short temp = ((unsigned short*)srcData)[index] / (maxValOfImage/255.0);
+			*(pRealData + pit*y + x*bitCount) = temp < 256 ? temp : 255;
+			*(pRealData + pit*y + x*bitCount + 1) = temp < 256 ? temp : 255;
+			*(pRealData + pit*y + x*bitCount + 2) = temp < 256 ? temp : 255;
 			index++;
 		}
 	}
+}
+
+bool SecurityImage::enhanceHigh()
+{
+	// 定义用于保存图像的Mat矩阵
+	Mat srcImg(row, col, CV_16UC1, highEnergyImage);
+	Mat dstImg = srcImg.clone();
+
+	//double clipLimit = 0.1;
+	//Ptr<cv::CLAHE> clahe = createCLAHE();
+	//clahe->setClipLimit(clipLimit);
+	//clahe->apply(srcImg, dstImg);
+
+	// 引导滤波器(去除光晕)
+	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
+
+	// 同态滤波器
+	myHomoFilter(dstImg, dstImg);
+
+	// 引导滤波器(去除光晕)
+	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
+
+	//Mat temp;
+	//dstImg.convertTo(temp, CV_32FC1);
+	//imshow("temp", temp/4096);
+	//waitKey(0);
+
+
+	
+	// 分配空间
+	enHighEnergyImage = new unsigned char[row*col*bytesOfPix];
+	if (dstImg.isContinuous())
+	{
+		memcpy(enHighEnergyImage, dstImg.data, row*col*bytesOfPix);
+	}
+	else
+	{
+		// 按行复制
+		for (int i = 0; i < dstImg.rows; i++)
+		{
+			memcpy(enHighEnergyImage + i*col*bytesOfPix, dstImg.ptr<uchar>(i), col*bytesOfPix);
+		}
+	}
+
+	return true;
+}
+bool SecurityImage::enhanceLow()
+{
+	// 定义用于保存图像的Mat矩阵
+	Mat srcImg(row, col, CV_16UC1, lowEnergyImage);
+	Mat dstImg = srcImg.clone();
+
+	//double clipLimit = 0.1;
+	//Ptr<cv::CLAHE> clahe = createCLAHE();
+	//clahe->setClipLimit(clipLimit);
+	//clahe->apply(srcImg, dstImg);
+
+	
+
+	// 引导滤波器(去除光晕)
+	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
+
+	// 同态滤波器
+	myHomoFilter(dstImg, dstImg);
+
+	// 引导滤波器(去除光晕)
+	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
+
+	
+	//Mat temp;
+	//dstImg.convertTo(temp, CV_32FC1);
+	//imshow("temp", temp/4096);
+	//waitKey(0);
+
+	// 分配空间
+	enLowEnergyImage = new unsigned char[row*col*bytesOfPix];
+	if (dstImg.isContinuous())
+	{
+		memcpy(enLowEnergyImage, dstImg.data, row*col*bytesOfPix);
+	}
+	else
+	{
+		// 按行复制
+		for (int i = 0; i < dstImg.rows; i++)
+		{
+			memcpy(enLowEnergyImage + i*col*bytesOfPix, dstImg.ptr<uchar>(i), col*bytesOfPix);
+		}
+	}
+
+	return true;
+}
+bool SecurityImage::enhanceDual()
+{
+	enDualEnergyImage = highEnergyImage;
+	return true;
 }

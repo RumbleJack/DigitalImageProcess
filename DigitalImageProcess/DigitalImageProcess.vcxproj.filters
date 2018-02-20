@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
-    <Filter Include="对话框类">
-      <UniqueIdentifier>{02073023-b0a5-450f-8033-7cc7115f94df}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DigitalImageProcess.cpp">
@@ -24,14 +21,23 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DigitalImageProcessDlg.cpp">
-      <Filter>对话框类</Filter>
-    </ClCompile>
     <ClCompile Include="SecurityImage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="DigitalImageProcessDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="ShowSIDlg.cpp">
-      <Filter>对话框类</Filter>
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="myHomoFilter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="guidedfilter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="minFilter.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,9 +50,6 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="DigitalImageProcessDlg.h">
-      <Filter>对话框类</Filter>
-    </ClInclude>
     <ClInclude Include="SecurityImage.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -54,7 +57,19 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ShowSIDlg.h">
-      <Filter>对话框类</Filter>
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DigitalImageProcessDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="myHomoFilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="guidedfilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="minFilter.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

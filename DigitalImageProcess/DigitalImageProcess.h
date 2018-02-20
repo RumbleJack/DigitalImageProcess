@@ -10,7 +10,6 @@
 
 #include "resource.h"		// 主符号
 
-
 // CDigitalImageProcessApp:
 // 有关此类的实现，请参阅 DigitalImageProcess.cpp
 //

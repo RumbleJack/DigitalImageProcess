@@ -213,6 +213,9 @@
   <ItemGroup>
     <ClCompile Include="DigitalImageProcess.cpp" />
     <ClCompile Include="DigitalImageProcessDlg.cpp" />
+    <ClCompile Include="guidedfilter.cpp" />
+    <ClCompile Include="minFilter.cpp" />
+    <ClCompile Include="myHomoFilter.cpp" />
     <ClCompile Include="SecurityImage.cpp" />
     <ClCompile Include="ShowSIDlg.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -225,6 +228,9 @@
   <ItemGroup>
     <ClInclude Include="DigitalImageProcess.h" />
     <ClInclude Include="DigitalImageProcessDlg.h" />
+    <ClInclude Include="guidedfilter.h" />
+    <ClInclude Include="minFilter.h" />
+    <ClInclude Include="myHomoFilter.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SecurityImage.h" />
     <ClInclude Include="ShowSIDlg.h" />

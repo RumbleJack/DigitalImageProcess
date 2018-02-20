@@ -10,7 +10,6 @@
 #define IDR_MAINFRAME                   128
 #define IDR_MENU_MAIN                   129
 #define IDR_MENU_MAIN1                  130
-#define IDR_MENU_ShowSIDlg              130
 #define IDD_GrayStretchDlg              132
 #define IDD_DrawIntensity               135
 #define IDD_AnyFilter                   137
@@ -68,13 +67,18 @@
 #define ID_32811                        32811
 #define ID_EnSEILow                     32812
 #define ID_EnSEIHigh                    32813
+#define ID_32814                        32814
+#define ID_32815                        32815
+#define ID_32816                        32816
+#define ID_ShowSEILow                   32817
+#define ID_ShowSEIHigh                  32818
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        144
-#define _APS_NEXT_COMMAND_VALUE         32814
+#define _APS_NEXT_COMMAND_VALUE         32819
 #define _APS_NEXT_CONTROL_VALUE         1045
 #define _APS_NEXT_SYMED_VALUE           104
 #endif

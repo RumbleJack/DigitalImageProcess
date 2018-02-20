@@ -176,7 +176,6 @@ END
 IDD_ShowSIDlg DIALOGEX 0, 0, 351, 440
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Dialog"
-MENU IDR_MENU_ShowSIDlg
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "确定",IDOK,222,378,50,14
@@ -290,50 +289,13 @@ END
 
 IDR_MENU_MAIN MENU
 BEGIN
-    POPUP "文件"
-    BEGIN
-        MENUITEM "打开图片(Pkg)",                   ID_OpenPkg
-        MENUITEM "打开图片(Raw)",                   ID_OpenRaw
-        MENUITEM "还原图像",                        ID_RecoveryOriginImage
-    END
-    POPUP "灰度变换"
-    BEGIN
-        MENUITEM "窗宽窗位调节",                      ID_GrayStretch
-        MENUITEM "绘制直方图",                       ID_DrawIntensity
-    END
-    POPUP "图像滤波"
-    BEGIN
-        MENUITEM "图像平滑",                        ID_AnyFilter
-    END
     POPUP "安检图像增强"
     BEGIN
+        MENUITEM "打开pkg图像",                     ID_OpenPkg
+        MENUITEM "显示单能图像(低能)",                  ID_ShowSEILow
         MENUITEM "增强单能图像(低能)",                  ID_EnSEILow
+        MENUITEM "显示单能图像(高能)",                  ID_ShowSEIHigh
         MENUITEM "增强单能图像(高能)",                  ID_EnSEIHigh
-        MENUITEM "增强双能图像",                      ID_EnDEI
-        MENUITEM "批量增强双能图像",                    ID_EnDEIBat
-    END
-END
-
-IDR_MENU_ShowSIDlg MENU
-BEGIN
-    POPUP "文件"
-    BEGIN
-        MENUITEM "打开图片(Pkg)",                   ID_OpenPkg
-        MENUITEM "打开图片(Raw)",                   ID_OpenRaw
-        MENUITEM "还原图像",                        ID_RecoveryOriginImage
-    END
-    POPUP "灰度变换"
-    BEGIN
-        MENUITEM "窗宽窗位调节",                      ID_GrayStretch
-        MENUITEM "绘制直方图",                       ID_DrawIntensity
-    END
-    POPUP "图像滤波"
-    BEGIN
-        MENUITEM "图像平滑",                        ID_AnyFilter
-    END
-    POPUP "安检图像增强"
-    BEGIN
-        MENUITEM "增强单能图像",                      ID_EnSEI
         MENUITEM "增强双能图像",                      ID_EnDEI
         MENUITEM "批量增强双能图像",                    ID_EnDEIBat
     END

@@ -85,6 +85,10 @@ BEGIN_MESSAGE_MAP(CDigitalImageProcessDlg, CDialog)
 	ON_COMMAND(ID_EnSEIHigh, &CDigitalImageProcessDlg::OnEnSingleEnergyImageHigh)
 	ON_COMMAND(ID_EnDEIBat, &CDigitalImageProcessDlg::OnEnDualEnergyImageBat)
 	
+	ON_COMMAND(ID_OpenPkg, &CDigitalImageProcessDlg::OnOpenpkg)
+	ON_COMMAND(ID_ShowSEILow, &CDigitalImageProcessDlg::OnShowseilow)
+	ON_COMMAND(ID_ShowSEIHigh, &CDigitalImageProcessDlg::OnShowseihigh)
+	ON_COMMAND(ID_EnDEI, &CDigitalImageProcessDlg::OnEnDualEnergyImage)
 END_MESSAGE_MAP()
 
 
@@ -439,7 +443,7 @@ void CDigitalImageProcessDlg::OnSize(UINT nType, int cx, int cy)
 
 }
 
-void CDigitalImageProcessDlg::OnEnSingleEnergyImageLow()
+void CDigitalImageProcessDlg::OnOpenpkg()
 {
 	// 新建打开文件对话框
 	CFileDialog file(1);
@@ -454,12 +458,46 @@ void CDigitalImageProcessDlg::OnEnSingleEnergyImageLow()
 
 	// ProcessImage读入图像（自定义格式）
 	m_pSecurityImage->readImageFromFile(fileName);
+}
 
+void CDigitalImageProcessDlg::OnShowseilow()
+{
 	// 填充CImage
 	if (!m_pCImage->IsNull())
 		m_pCImage->Destroy();
 	m_pCImage->Create(m_pSecurityImage->col, m_pSecurityImage->row, 24);
-	m_pSecurityImage->setCImageFast(m_pSecurityImage->getLowEnergyImage(),*m_pCImage);
+	m_pSecurityImage->setCImageFast(m_pSecurityImage->getLowEnergyImage(), *m_pCImage);
+	// 使整个窗口客户区无效
+	Invalidate();
+}
+
+void CDigitalImageProcessDlg::OnShowseihigh()
+{
+	// 填充CImage
+	if (!m_pCImage->IsNull())
+		m_pCImage->Destroy();
+	m_pCImage->Create(m_pSecurityImage->col, m_pSecurityImage->row, 24);
+	m_pSecurityImage->setCImageFast(m_pSecurityImage->getHighEnergyImage(), *m_pCImage);
+
+	// 使整个窗口客户区无效
+	Invalidate();
+}
+
+void CDigitalImageProcessDlg::OnEnSingleEnergyImageLow()
+{
+	m_pSecurityImage->enhanceLow();
+
+	// 填充CImage
+	CImage *enLowImg = new CImage();
+	enLowImg->Create(m_pSecurityImage->col, m_pSecurityImage->row, 24);
+	m_pSecurityImage->setCImageFast(m_pSecurityImage->getEnLowEnergyImage(), *enLowImg);
+
+	// 显示在指定对话框中
+	ShowSIDlg showSIDlg;
+	showSIDlg.m_CImg = enLowImg;
+	//显示对话框
+	if (showSIDlg.DoModal() != IDOK)
+		return;
 
 	// 使整个窗口客户区无效
 	Invalidate();
@@ -467,32 +505,39 @@ void CDigitalImageProcessDlg::OnEnSingleEnergyImageLow()
 
 void CDigitalImageProcessDlg::OnEnSingleEnergyImageHigh()
 {
-	// 新建打开文件对话框
-	CFileDialog file(1);
-	file.m_ofn.lpstrTitle = _T("打开图片");
-
-	// 如果未点击确定则返回
-	if (file.DoModal() != IDOK)
-		return;
-
-	// 获取路径
-	CString fileName = file.GetPathName();
-
-	// ProcessImage读入图像（自定义格式）
-	m_pSecurityImage->readImageFromFile(fileName);
+	m_pSecurityImage->enhanceHigh();
 
 	// 填充CImage
-	if (!m_pCImage->IsNull())
-		m_pCImage->Destroy();
-	m_pCImage->Create(m_pSecurityImage->col, m_pSecurityImage->row, 24);
-	m_pSecurityImage->setCImageFast(m_pSecurityImage->getHighEnergyImage(), *m_pCImage);
+	CImage *enHighImg = new CImage();
+	enHighImg->Create(m_pSecurityImage->col, m_pSecurityImage->row, 24);
+	m_pSecurityImage->setCImageFast(m_pSecurityImage->getEnHighEnergyImage(), *enHighImg);
 
-	//// 显示在指定对话框中
-	//ShowSIDlg showSIDlg;
-	//showSIDlg.m_CImg = m_pCImage;
-	////显示对话框
-	//if (showSIDlg.DoModal() != IDOK)
-	//	return;
+	// 显示在指定对话框中
+	ShowSIDlg showSIDlg;
+	showSIDlg.m_CImg = enHighImg;
+	//显示对话框
+	if (showSIDlg.DoModal() != IDOK)
+		return;
+
+	// 使整个窗口客户区无效
+	Invalidate();
+}
+
+void CDigitalImageProcessDlg::OnEnDualEnergyImage()
+{
+	m_pSecurityImage->enhanceDual();
+
+	// 填充CImage
+	CImage *enLowImg = new CImage();
+	enLowImg->Create(m_pSecurityImage->col, m_pSecurityImage->row, 24);
+	m_pSecurityImage->setCImageFast(m_pSecurityImage->getEnDualEnergyImage(), *enLowImg);
+
+	// 显示在指定对话框中
+	ShowSIDlg showSIDlg;
+	showSIDlg.m_CImg = enLowImg;
+	//显示对话框
+	if (showSIDlg.DoModal() != IDOK)
+		return;
 
 	// 使整个窗口客户区无效
 	Invalidate();

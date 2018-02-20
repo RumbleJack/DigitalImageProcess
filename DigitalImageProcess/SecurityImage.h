@@ -11,21 +11,33 @@ public:
 	SecurityImage();
 	SecurityImage(SecurityImage& );
 	~SecurityImage();
-public:
-	// ÃÓ≥‰CImage
-	void setCImageFast(unsigned char* srcData, CImage &m_pCImage);
-public:
-	bool enhanceALL(string dataPathFileName);
-	bool readImageFromFile(const char* );
-	bool showImageUsingOpenCV();
-	bool saveSrcImageToFile(string = string(""), string = string(""));
-	bool saveResImageToFile(string = string(""));
 
+// Set°¢Get∫Ø ˝
+public:
 	bool setHighEnergyImage(unsigned char*);
 	bool setLowEnergyImage(unsigned char*);
 	unsigned char* getHighEnergyImage();
 	unsigned char* getLowEnergyImage();
 
+	unsigned char* getEnHighEnergyImage();
+	unsigned char* getEnLowEnergyImage();
+	unsigned char* getEnDualEnergyImage();
+
+//  ‰»Î ‰≥ˆ∫Ø ˝
+public:
+	bool readImageFromFile(const char*);
+	// ÃÓ≥‰CImage
+	void setCImageFast(unsigned char* srcData, CImage &m_pCImage);
+	bool showImageUsingOpenCV();
+	bool saveSrcImageToFile(string = string(""), string = string(""));
+	bool saveResImageToFile(string = string(""));
+
+public:
+	bool enhanceALL(string dataPathFileName);
+	bool enhanceHigh();
+	bool enhanceLow();
+	bool enhanceDual();
+	
 public:
 	unsigned int row;
 	unsigned int col;
@@ -35,8 +47,11 @@ public:
 
 	char* imageFilePath;
 	string imageFileName;
+
 private:
 	unsigned char* highEnergyImage;
 	unsigned char* lowEnergyImage;
-	unsigned char* enhancedImage;
+	unsigned char* enHighEnergyImage;
+	unsigned char* enLowEnergyImage;
+	unsigned char* enDualEnergyImage;
 };

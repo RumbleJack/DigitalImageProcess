@@ -46,6 +46,7 @@ BOOL CDigitalImageProcessApp::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("数字图像处理程序"));
 
+	// 初始化对话框
 	CDigitalImageProcessDlg dlg;
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();
