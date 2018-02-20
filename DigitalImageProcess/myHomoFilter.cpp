@@ -46,7 +46,7 @@ bool myHomoFilterForSingleChannel(Mat inImage, Mat& outImage)
 	split(complexI, planes); // planes[0] = Re(DFT(I), planes[1] = Im(DFT(I))
 
 	// Éú³ÉbutterWorthÂË²¨Æ÷
-	Mat butterWorth = getButterWorth(inImage.rows,inImage.cols,2000,1,1.5,0.5);
+	Mat butterWorth = getButterWorth(inImage.rows,inImage.cols,10000,1,1.5,0.5);
 	
 	// ÆµÓòÏà³Ë
 	//imshow("butterWorth", butterWorth/2);

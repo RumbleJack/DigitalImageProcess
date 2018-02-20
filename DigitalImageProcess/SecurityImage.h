@@ -4,6 +4,9 @@
 #include <string>
 using namespace std;
 
+#include <opencv2/highgui.hpp>
+using  cv::Mat;
+
 // 负责存储安检数据图像
 class SecurityImage
 {
@@ -37,6 +40,10 @@ public:
 	bool enhanceHigh();
 	bool enhanceLow();
 	bool enhanceDual();
+
+public:
+	// 将图像灰度拉伸到区间[0,maxValOfImage],锐化后有一部分像素超出了原本的最大值
+	bool strtchGrayToFullInterval(Mat &srcImg,Mat &dstImg);
 	
 public:
 	unsigned int row;

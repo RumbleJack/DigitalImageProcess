@@ -230,6 +230,7 @@
     <ClInclude Include="DigitalImageProcessDlg.h" />
     <ClInclude Include="guidedfilter.h" />
     <ClInclude Include="minFilter.h" />
+    <ClInclude Include="myGammaCorrection.h" />
     <ClInclude Include="myHomoFilter.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="SecurityImage.h" />

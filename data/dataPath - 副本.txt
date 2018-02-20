@@ -1,5 +1,0 @@
-D:\Users\jackren\documents\GitHub\SecurityImageEnhancement\data\bag_1.pkg 
-D:\Users\jackren\documents\GitHub\SecurityImageEnhancement\data\bag_2.pkg 
-D:\Users\jackren\documents\GitHub\SecurityImageEnhancement\data\bag_3.pkg 
-D:\Users\jackren\documents\GitHub\SecurityImageEnhancement\data\bag_4.pkg 
-D:\Users\jackren\documents\GitHub\SecurityImageEnhancement\data\save\pc_board.jpg 

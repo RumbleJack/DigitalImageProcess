@@ -6,6 +6,7 @@ using namespace cv;
 #include "myHomoFilter.h"
 #include "guidedfilter.h"
 #include "minFilter.h"
+#include "myGammaCorrection.h"
 
 SecurityImage::SecurityImage()
 {
@@ -71,6 +72,7 @@ bool SecurityImage::enhanceALL(string dataPathFileName)
 		// saveSrcImageToFile();
 
 		// 处理原始数据
+		enhanceDual();
 
 		// 保存处理数据
 		saveResImageToFile();
@@ -323,15 +325,21 @@ bool SecurityImage::enhanceHigh()
 	myHomoFilter(dstImg, dstImg);
 
 	// 引导滤波器(去除光晕)
-	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
+	dstImg = guidedFilter(srcImg, dstImg, 40, 1);
+
+	// 执行UnsharpMasking
+	Mat lowFrenquency;
+	Mat highFrenquency;
+	GaussianBlur(dstImg, lowFrenquency, Size(5, 5), 0.4);
+	highFrenquency = dstImg - lowFrenquency;
+	dstImg = dstImg + 20 * highFrenquency;
+
 
 	//Mat temp;
 	//dstImg.convertTo(temp, CV_32FC1);
 	//imshow("temp", temp/4096);
 	//waitKey(0);
 
-
-	
 	// 分配空间
 	enHighEnergyImage = new unsigned char[row*col*bytesOfPix];
 	if (dstImg.isContinuous())
@@ -355,13 +363,6 @@ bool SecurityImage::enhanceLow()
 	Mat srcImg(row, col, CV_16UC1, lowEnergyImage);
 	Mat dstImg = srcImg.clone();
 
-	//double clipLimit = 0.1;
-	//Ptr<cv::CLAHE> clahe = createCLAHE();
-	//clahe->setClipLimit(clipLimit);
-	//clahe->apply(srcImg, dstImg);
-
-	
-
 	// 引导滤波器(去除光晕)
 	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
 
@@ -369,33 +370,70 @@ bool SecurityImage::enhanceLow()
 	myHomoFilter(dstImg, dstImg);
 
 	// 引导滤波器(去除光晕)
-	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
+	dstImg = guidedFilter(srcImg, dstImg, 40, 1);
 
-	
-	//Mat temp;
-	//dstImg.convertTo(temp, CV_32FC1);
-	//imshow("temp", temp/4096);
-	//waitKey(0);
+	// 执行UnsharpMasking
+	Mat lowFrenquency;
+	Mat highFrenquency;
+	GaussianBlur(dstImg, lowFrenquency, Size(5, 5), 0.4);
+	highFrenquency = dstImg - lowFrenquency;
+	dstImg = dstImg + 20 * highFrenquency;
+
+	//Gamma矫正
+	//MyGammaCorrection(dstImg, dstImg, 0.8);
+	//strtchGrayToFullInterval(dstImg, dstImg);
 
 	// 分配空间
 	enLowEnergyImage = new unsigned char[row*col*bytesOfPix];
-	if (dstImg.isContinuous())
-	{
+	if (dstImg.isContinuous()){
 		memcpy(enLowEnergyImage, dstImg.data, row*col*bytesOfPix);
-	}
-	else
-	{
+	}else{
 		// 按行复制
-		for (int i = 0; i < dstImg.rows; i++)
-		{
+		for (int i = 0; i < dstImg.rows; i++){
 			memcpy(enLowEnergyImage + i*col*bytesOfPix, dstImg.ptr<uchar>(i), col*bytesOfPix);
 		}
 	}
-
 	return true;
 }
 bool SecurityImage::enhanceDual()
 {
-	enDualEnergyImage = highEnergyImage;
+	enhanceHigh();
+	enhanceLow();
+
+	// 图像融合
+	Mat srcImg1(row, col, CV_16UC1, enLowEnergyImage);
+	Mat srcImg2(row, col, CV_16UC1, enHighEnergyImage);
+	Mat dstImg = srcImg1 + srcImg2;
+	divide(dstImg, 2, dstImg);
+
+	// 分配空间
+	enDualEnergyImage = new unsigned char[row*col*bytesOfPix];
+	if (dstImg.isContinuous()){
+		memcpy(enDualEnergyImage, dstImg.data, row*col*bytesOfPix);
+	}
+	else{
+		// 按行复制
+		for (int i = 0; i < dstImg.rows; i++){
+			memcpy(enDualEnergyImage + i*col*bytesOfPix, dstImg.ptr<uchar>(i), col*bytesOfPix);
+		}
+	}
+	return true;
+}
+
+bool SecurityImage::strtchGrayToFullInterval(Mat &srcImg, Mat &dstImg)
+{
+	double minv = 0, maxv = 0;
+	minMaxLoc(srcImg, &minv, &maxv);
+
+	Mat temp(srcImg.size(), CV_32FC1);
+	srcImg.convertTo(temp, temp.type());
+
+	////实现L^{m}_{b}(x,y) = (1-\frac{1}{2}\frac{L_{b}(x,y)}{L_{max}})\frac{L_{b}(x,y)L_{max}^{m}}{L_{max}}
+	//multiply(1.0 - 0.5 * temp / maxv, temp, temp, 1, -1);
+	minMaxLoc(temp, &minv, &maxv);
+	multiply(temp, maxValOfImage / (maxv-minv), temp, 1, -1);
+
+	temp.convertTo(dstImg, CV_16UC1);
+
 	return true;
 }

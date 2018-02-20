@@ -71,6 +71,9 @@
     <ClInclude Include="minFilter.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="myGammaCorrection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\DigitalImageProcess.ico">
