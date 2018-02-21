@@ -318,21 +318,18 @@ bool SecurityImage::enhanceHigh()
 	//clahe->setClipLimit(clipLimit);
 	//clahe->apply(srcImg, dstImg);
 
-	// 引导滤波器(去除光晕)
-	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
+	// 引导滤波器
+	dstImg = guidedFilter(srcImg, dstImg, 3, 10);
 
 	// 同态滤波器
 	myHomoFilter(dstImg, dstImg);
 
-	// 引导滤波器(去除光晕)
-	dstImg = guidedFilter(srcImg, dstImg, 40, 1);
-
 	// 执行UnsharpMasking
 	Mat lowFrenquency;
 	Mat highFrenquency;
-	GaussianBlur(dstImg, lowFrenquency, Size(5, 5), 0.4);
+	GaussianBlur(dstImg, lowFrenquency, Size(5, 5), 1);
 	highFrenquency = dstImg - lowFrenquency;
-	dstImg = dstImg + 20 * highFrenquency;
+	dstImg = dstImg + 1 * highFrenquency;
 
 
 	//Mat temp;
@@ -364,22 +361,22 @@ bool SecurityImage::enhanceLow()
 	Mat dstImg = srcImg.clone();
 
 	// 引导滤波器(去除光晕)
-	dstImg = guidedFilter(srcImg, dstImg, 20, 10);
+	dstImg = guidedFilter(srcImg, dstImg, 3, 10);
 
 	// 同态滤波器
 	myHomoFilter(dstImg, dstImg);
 
-	// 引导滤波器(去除光晕)
-	dstImg = guidedFilter(srcImg, dstImg, 40, 1);
-
 	// 执行UnsharpMasking
 	Mat lowFrenquency;
 	Mat highFrenquency;
-	GaussianBlur(dstImg, lowFrenquency, Size(5, 5), 0.4);
+	GaussianBlur(dstImg, lowFrenquency, Size(5, 5), 1);
 	highFrenquency = dstImg - lowFrenquency;
-	dstImg = dstImg + 20 * highFrenquency;
+	dstImg = dstImg + 1 * highFrenquency;
 
-	//Gamma矫正
+	// 引导滤波器(去除光晕)
+	//dstImg = guidedFilter(srcImg, dstImg, 40, 0.1);
+
+	////Gamma矫正
 	//MyGammaCorrection(dstImg, dstImg, 0.8);
 	//strtchGrayToFullInterval(dstImg, dstImg);
 
