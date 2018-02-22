@@ -400,8 +400,16 @@ bool SecurityImage::enhanceDual()
 	// 图像融合
 	Mat srcImg1(row, col, CV_16UC1, enLowEnergyImage);
 	Mat srcImg2(row, col, CV_16UC1, enHighEnergyImage);
-	Mat dstImg = srcImg1 + srcImg2;
-	divide(dstImg, 2, dstImg);
+
+	// 均值融合
+	//Mat dstImg = srcImg1 + srcImg2;
+	//divide(dstImg, 2, dstImg);
+
+	// 低频均值，高频相加融合
+	Mat lowSrc1, lowSrc2,highSrc1,highSrc2;
+	GaussianBlur(srcImg1, lowSrc1, Size(5,5),1);
+	GaussianBlur(srcImg2, lowSrc2, Size(5, 5), 1);
+	Mat dstImg = srcImg1 + srcImg2 - lowSrc1 / 2 - lowSrc2 / 2;
 
 	// 分配空间
 	enDualEnergyImage = new unsigned char[row*col*bytesOfPix];
